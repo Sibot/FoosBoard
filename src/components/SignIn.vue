@@ -14,9 +14,9 @@
         <input name="password" type="password" placeholder="Password" v-model="userPassword" />
       </div>
       <div class="field is-horizontal">
-        <button class="button" v-on:click="login()">Login</button>
+        <md-button class="button md-raised md-primary" v-on:click="login()">Login</md-button>
       </div>
-      <button class="button" v-on:click="quickLogin()">Quick Login</button>
+      <md-button class="button md-raised" v-on:click="quickLogin()">Quick Login</md-button>
     </div>
   </div>
 </template>

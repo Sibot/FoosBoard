@@ -23,11 +23,9 @@ export default {
 
 <style lang="scss">
   @import '~reset-css/_reset.scss';
-  @import url('https://fonts.googleapis.com/css?family=Ubuntu+Mono');
+  @import url('https://fonts.googleapis.com/css?family=Ubuntu+Mono|Material+Icons');
+
 body {
   font-family: 'Ubuntu Mono', monospace;
-}
-.button {
-
 }
 </style>
