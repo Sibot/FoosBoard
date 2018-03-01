@@ -3,13 +3,13 @@ import App from './App'
 import store from './vuex/index'
 import router from './router'
 import * as firebase from 'firebase'
-import { MdApp, MdButton } from 'vue-material/dist/components'
+import { MdTabs, MdButton } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 
 Vue.config.productionTip = false
 
 Vue.use(MdButton)
-Vue.use(MdApp)
+Vue.use(MdTabs)
 
 var config = {
   apiKey: 'AIzaSyDFqEKhb0Ac0bJTvkftlmi0oNVY5t1500o',
