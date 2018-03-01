@@ -2,11 +2,11 @@
   <div class="profile-container">
     Hello authenticated user!
     <span v-if="user">
-      You logged in with {{this.user.emailVerified ? ``: `not`}} verified email {{this.user.email}}
+      You logged in as {{this.user.displayName}} with {{this.user.emailVerified ? ``: `not`}} verified email {{this.user.email}}
     </span>
-    <input type="text" placeholder="Displayname" name="displayname" v-model="user.displayName">
+    <input type="text" placeholder="Displayname" name="displayname" v-model="displayName">
 
-    <button class="button" @click="saveProfile()">Save profile</button>
+    <button class="button" @click="updateProfile()">Save profile</button>
 
     <button class="button" v-on:click="logout()">Logout</button>
     <div>
@@ -20,7 +20,16 @@ import appService from '../app.service'
 import { mapGetters } from 'vuex'
 export default {
   methods: {
-    sendVerificationEmail: function () {
+    updateProfile () {
+      let newProfile = {}
+      if (this.user.displayName !== this.displayName) {
+        newProfile.displayName = this.displayName
+      }
+      this.$store.dispatch('updateProfile', newProfile).then(() => {
+        console.log(this.user.displayName)
+      })
+    },
+    sendVerificationEmail () {
       appService.sendVerificationEmail(this.user.email)
     }
   },

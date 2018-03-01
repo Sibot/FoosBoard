@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import appService from '../app.service'
-import firebase from 'firebase'
 
 Vue.use(Vuex)
 
@@ -17,7 +16,8 @@ const store = new Vuex.Store({
       return state.isAuthenticated
     },
     user: (state) => {
-      return state.user || firebase.auth().currentUser
+      var user = state.user
+      return user
     }
   },
   actions: {
@@ -34,6 +34,16 @@ const store = new Vuex.Store({
           })
           .catch((response) => {
             reject(response)
+          })
+      })
+    },
+    updateProfile (context, newProfile) {
+      return new Promise((resolve, reject) => {
+        state.user.updateProfile(newProfile)
+          .then(() => {
+            resolve()
+          }).catch((error) => {
+            reject(error)
           })
       })
     }
