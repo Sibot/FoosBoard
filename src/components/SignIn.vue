@@ -10,11 +10,11 @@
       <md-card-content>
         <md-field class="">
           <label for="email">Email</label>
-          <md-input name="email" type="text" v-model="userEmail"></md-input>
+          <md-input name="email" type="email" required v-model="userEmail"></md-input>
         </md-field>
         <md-field class="">
           <label for="password">Password</label>
-          <md-input name="password" type="password" v-model="userPassword"></md-input>
+          <md-input name="password" type="password" required v-model="userPassword"></md-input>
         </md-field>
       </md-card-content>
       <md-card-actions>

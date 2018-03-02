@@ -3,8 +3,8 @@
     <md-card-header>
       <h2 class="md-title">Welcome to the blog</h2>
     </md-card-header>
-    <md-card-content class="columns">
-      <md-card v-for="post in posts" :key="post.id" class="column is-one-third">
+    <md-card-content>
+      <md-card v-for="post in posts" :key="post.id">
         <app-post :link="post.URL">
           <md-card-header slot="title" v-html="post.title"></md-card-header>
           <md-card-content slot="content" v-html="post.excerpt"></md-card-content>

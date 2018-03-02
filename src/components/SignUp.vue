@@ -7,11 +7,11 @@
       <md-card-content>
         <md-field class="">
           <label for="email">Email</label>
-          <md-input name="email" type="text" v-model="userEmail"></md-input>
+          <md-input name="email" type="email" required v-model="userEmail"></md-input>
         </md-field>
         <md-field class="">
           <label for="password">Password</label>
-          <md-input name="password" type="password" v-model="userPassword"></md-input>
+          <md-input name="password" type="password" required v-model="userPassword"></md-input>
         </md-field>
         <div class="error" v-if="clearFlag">{{signUpErrorMessage}}</div>
       </md-card-content>
@@ -22,7 +22,7 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import UserProfile from './UserProfile'
 import appService from '../app.service'
 
@@ -45,8 +45,7 @@ export default {
     }
   },
   methods: {
-
-    signup () {
+    signUp () {
       this.$store.dispatch('signUp', { email: this.userEmail, password: this.userPassword })
         .then(() => {
           this.$router.push('signIn')

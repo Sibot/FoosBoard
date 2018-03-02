@@ -3,7 +3,7 @@
       <slot name="title"></slot>
       <slot name="content"></slot>
     <md-card-actions>
-      <a class="card-footer-item" :href="link" target="_blank">Read more</a>
+      <md-button :href="link" target="_blank">Read more</md-button>
     </md-card-actions>
   </md-card>
 </template>
