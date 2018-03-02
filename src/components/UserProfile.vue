@@ -1,8 +1,8 @@
 <template>
   <div class="profile-container">
-    Hello authenticated user!
+    Hello {{this.user.displayName}}!
     <span v-if="user">
-      You logged in as {{this.user.displayName}} with {{this.user.emailVerified ? ``: `not`}} verified email {{this.user.email}}
+      You logged in with {{this.user.emailVerified ? ``: `not`}} verified email {{this.user.email}}
     </span>
     <input type="text" placeholder="Displayname" name="displayname" v-model="displayName">
 
@@ -21,7 +21,7 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   methods: {
     ...mapActions({
-      logout: 'signOut'
+      signOut: 'signOut'
     }),
     updateProfile () {
       let newProfile = {}
