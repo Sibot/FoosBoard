@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import appService from '../app.service'
+import firebase from 'firebase'
 
 Vue.use(Vuex)
 
@@ -38,6 +39,20 @@ const store = new Vuex.Store({
           })
       })
     },
+    signUp (context, credentials) {
+      return new Promise((resolve, reject) => {
+        appService
+          .signUp(credentials)
+          .then(user => {
+            state.user = user
+            state.isAuthenticated = true
+            resolve()
+          })
+          .catch(response => {
+            reject(response)
+          })
+      })
+    },
     updateProfile (context, newProfile) {
       return new Promise((resolve, reject) => {
         state.user
@@ -53,6 +68,12 @@ const store = new Vuex.Store({
   },
   mutations: {
     signOut (state) {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          // Todo handle success/fail
+        })
       state.isAuthenticated = false
       state.user = null
     }

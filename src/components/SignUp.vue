@@ -50,7 +50,7 @@ export default {
       this.clearToken = this.userEmail + this.password
       appService.signUp({ email: this.userEmail, password: this.userPassword })
         .then(() => {
-          this.$router.go('/signin')
+          // todo route to signin
         })
         .catch((error) => {
           this.signUpErrorMessage = error.message
