@@ -50,19 +50,6 @@ const appService = {
           reject(error)
         })
     })
-  },
-  sendVerificationEmail () {
-    return new Promise((resolve, reject) => {
-      firebase
-        .auth()
-        .currentUser.sendEmailVerification()
-        .then(function () {
-          resolve()
-        })
-        .catch(function (error) {
-          reject(error)
-        })
-    })
   }
 }
 

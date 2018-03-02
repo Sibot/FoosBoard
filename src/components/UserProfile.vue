@@ -16,24 +16,34 @@
 
 </template>
 <script>
-import appService from '../app.service'
 import { mapGetters, mapActions } from 'vuex'
 export default {
   methods: {
     ...mapActions({
-      signOut: 'signOut'
+      signOut: 'signOut',
+      sendVerificationEmail: 'sendVerificationEmail'
     }),
     updateProfile () {
       let newProfile = {}
       if (this.user.displayName !== this.displayName) {
         newProfile.displayName = this.displayName
       }
-      this.$store.dispatch('updateProfile', newProfile).then(() => {
-        console.log(this.user.displayName)
-      })
+      this.$store.dispatch('updateProfile', newProfile)
+        .then(() => {
+          this.$store.dispatch('notification', { message: 'Profile updated successfully!' })
+        })
+        .catch(() => {
+          this.$store.dispatch('notification', { message: 'Unable to update profile' })
+        })
     },
     sendVerificationEmail () {
-      appService.sendVerificationEmail(this.user.email)
+      this.$store.dispatch('sendVerificationEmail')
+        .then(() => {
+          this.$store.dispatch('notification', { message: 'Verification email sent!' })
+        })
+        .catch(() => {
+          this.$store.dispatch('notification', { message: 'Unable to send verification email!' })
+        })
     }
   },
   computed: {

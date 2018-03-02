@@ -62,6 +62,18 @@ const actions = {
           reject(error)
         })
     })
+  },
+  sendVerificationEmail (context) {
+    return new Promise((resolve, reject) => {
+      state.user
+        .sendEmailVerification()
+        .then(function () {
+          resolve()
+        })
+        .catch(function (error) {
+          reject(error)
+        })
+    })
   }
 }
 const mutations = {
