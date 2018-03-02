@@ -1,19 +1,29 @@
 <template>
-  <div class="profile-container">
-    Hello {{this.user.displayName}}!
-    <span v-if="user">
-      You logged in with {{this.user.emailVerified ? ``: `not`}} verified email {{this.user.email}}
-    </span>
-    <input type="text" placeholder="Displayname" name="displayname" v-model="displayName">
+<md-card>
+  <md-card-header>
+    <h2 class="md-title">Profile settings</h2>
+  </md-card-header>
+  <md-content class="profile-container">
+    <md-card v-if="!user.emailVerified">
+      <md-card-header>
+        <h3 class="md-card-title">Hello {{this.user.displayName}}!</h3>
+      </md-card-header>
+      <md-card-content>
+        You logged in with {{this.user.emailVerified ? ``: `not`}} verified email {{this.user.email}}.
+      </md-card-content>
+      <md-card-actions>
+        <md-button class="md-raised" @click="sendVerificationEmail()">Send verification email</md-button>
+      </md-card-actions>
+    </md-card>
+    <md-field>
+      <label for="displayname">Display name:</label>
+      <md-input type="text" placeholder="Displayname" name="displayname" v-model="displayName"></md-input>
+    </md-field>
+    <md-button class="md-raised" @click="updateProfile()">Save profile</md-button>
 
-    <button class="button" @click="updateProfile()">Save profile</button>
-
-    <button class="button" v-on:click="signOut()">Logout</button>
-    <div>
-      <button @click="sendVerificationEmail()">Send verification email</button>
-    </div>
-  </div>
-
+    <md-button class="md-raised md-primary" v-on:click="signOut()">Logout</md-button>
+  </md-content>
+</md-card>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'

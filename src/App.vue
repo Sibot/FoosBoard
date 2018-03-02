@@ -22,8 +22,8 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '~reset-css/_reset.scss';
-  @import url('https://fonts.googleapis.com/css?family=Ubuntu+Mono|Material+Icons');
+@import '~reset-css/_reset.scss';
+@import url('https://fonts.googleapis.com/css?family=Ubuntu+Mono|Material+Icons');
 
 body {
   font-family: 'Ubuntu Mono', monospace;

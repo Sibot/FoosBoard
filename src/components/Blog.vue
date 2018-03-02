@@ -1,15 +1,17 @@
 <template>
-  <div class="blog">
-    <h1>Welcome to the blog</h1>
-    <div class="columns">
-      <div v-for="post in posts" :key="post.id" class="column is-one-third">
+  <md-card>
+    <md-card-header>
+      <h2 class="md-title">Welcome to the blog</h2>
+    </md-card-header>
+    <md-card-content class="columns">
+      <md-card v-for="post in posts" :key="post.id" class="column is-one-third">
         <app-post :link="post.URL">
-          <h2 slot="title" v-html="post.title"></h2>
-          <span slot="content" v-html="post.excerpt"></span>
+          <md-card-header slot="title" v-html="post.title"></md-card-header>
+          <md-card-content slot="content" v-html="post.excerpt"></md-card-content>
         </app-post>
-      </div>
-    </div>
-    </div>
+      </md-card>
+    </md-card-content>
+  </md-card>
 </template>
 
 <script>

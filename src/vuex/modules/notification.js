@@ -1,12 +1,12 @@
 const state = {
-  notifications: [],
-  lastNotification: {}
+  notifications: []
 }
 
 const getters = {}
 const actions = {
-  notification (context, message) {
-    console.log(message)
+  notification (context, notification) {
+    this.notifications.push(notification)
+    console.log(notification.message)
   }
 }
 

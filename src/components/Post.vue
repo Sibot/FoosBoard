@@ -1,13 +1,11 @@
 <template>
-  <div class="card">
-    <div class="card-content">
+  <md-card>
       <slot name="title"></slot>
       <slot name="content"></slot>
-    </div>
-    <footer class="card-footer">
+    <md-card-actions>
       <a class="card-footer-item" :href="link" target="_blank">Read more</a>
-    </footer>
-  </div>
+    </md-card-actions>
+  </md-card>
 </template>
 <script>
 export default {
@@ -15,12 +13,12 @@ export default {
 }
 </script>
 <style>
-.card{
+.card {
   padding-bottom: 40px;
   height: 100%;
 }
 
-footer{
+footer {
   position: absolute;
   bottom: 0;
   width: 100%;

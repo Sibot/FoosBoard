@@ -1,23 +1,24 @@
 <template>
   <div>
-    <div v-if="isAuthenticated">
-      <user-profile></user-profile>
-    </div>
-    <div v-else>
-      <h2>Sign up!</h2>
-      <div class="field is-horizontal">
-        <label for="email">Email</label>
-        <input name="email" type="text" placeholder="Email" v-model="userEmail" />
-      </div>
-      <div class="field is-horizontal">
-        <label for="password">Password</label>
-        <input name="password" type="password" placeholder="Password" v-model="userPassword" />
-      </div>
-      <div class="field is-horizontal">
-        <button class="button" v-on:click="signup()">Sign up!</button>
-      </div>
-      <div class="error" v-if="clearFlag">{{signUpErrorMessage}}</div>
-    </div>
+    <md-card>
+      <md-card-header>
+        <h2 class="md-title">Sign up!</h2>
+      </md-card-header>
+      <md-card-content>
+        <md-field class="">
+          <label for="email">Email</label>
+          <md-input name="email" type="text" v-model="userEmail"></md-input>
+        </md-field>
+        <md-field class="">
+          <label for="password">Password</label>
+          <md-input name="password" type="password" v-model="userPassword"></md-input>
+        </md-field>
+        <div class="error" v-if="clearFlag">{{signUpErrorMessage}}</div>
+      </md-card-content>
+      <md-card-actions>
+        <md-button class="md-raised md-primary" v-on:click="signUp()">Sign up!</md-button>
+      </md-card-actions>
+    </md-card>
   </div>
 </template>
 <script>
@@ -44,17 +45,19 @@ export default {
     }
   },
   methods: {
-    ...mapActions['signup'],
+
     signup () {
-      this.signUpMessage = ''
-      this.clearToken = this.userEmail + this.password
-      appService.signUp({ email: this.userEmail, password: this.userPassword })
+      this.$store.dispatch('signUp', { email: this.userEmail, password: this.userPassword })
         .then(() => {
-          // todo route to signin
+          this.$router.push('signIn')
         })
         .catch((error) => {
           this.signUpErrorMessage = error.message
         })
+
+      // this.signUpMessage = ''
+      // this.clearToken = this.userEmail + this.password
+      // appService.signUp({ email: this.userEmail, password: this.userPassword })
     }
   }
 }
