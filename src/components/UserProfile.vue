@@ -8,7 +8,7 @@
 
     <button class="button" @click="updateProfile()">Save profile</button>
 
-    <button class="button" v-on:click="logout()">Logout</button>
+    <button class="button" v-on:click="signOut()">Logout</button>
     <div>
       <button @click="sendVerificationEmail()">Send verification email</button>
     </div>
@@ -17,9 +17,12 @@
 </template>
 <script>
 import appService from '../app.service'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   methods: {
+    ...mapActions({
+      logout: 'signOut'
+    }),
     updateProfile () {
       let newProfile = {}
       if (this.user.displayName !== this.displayName) {

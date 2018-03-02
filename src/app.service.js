@@ -13,7 +13,7 @@ const appService = {
         })
     })
   },
-  login (credentials) {
+  signIn (credentials) {
     return new Promise((resolve, reject) => {
       firebase
         .auth()
@@ -27,7 +27,7 @@ const appService = {
         })
     })
   },
-  logout () {
+  signOut () {
     return new Promise((resolve, reject) => {
       firebase
         .auth()
@@ -36,6 +36,19 @@ const appService = {
           window.localStorage.removeItem('user')
         })
         .catch(() => {})
+    })
+  },
+  signUp (credentials) {
+    return new Promise((resolve, reject) => {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(credentials.email, credentials.password)
+        .then(() => {
+          resolve()
+        })
+        .catch(function (error) {
+          reject(error)
+        })
     })
   },
   sendVerificationEmail () {

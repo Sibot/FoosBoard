@@ -12,44 +12,47 @@ const state = {
 const store = new Vuex.Store({
   state,
   getters: {
-    isAuthenticated: (state) => {
+    isAuthenticated: state => {
       return state.isAuthenticated
     },
-    user: (state) => {
+    user: state => {
       var user = state.user
       return user
     }
   },
   actions: {
-    logout (context) {
-      context.commit('logout')
+    signOut (context) {
+      context.commit('signOut')
     },
-    login (context, credentials) {
+    signIn (context, credentials) {
       return new Promise((resolve, reject) => {
-        appService.login(credentials)
-          .then((user) => {
+        appService
+          .signIn(credentials)
+          .then(user => {
             state.user = user
             state.isAuthenticated = true
             resolve()
           })
-          .catch((response) => {
+          .catch(response => {
             reject(response)
           })
       })
     },
     updateProfile (context, newProfile) {
       return new Promise((resolve, reject) => {
-        state.user.updateProfile(newProfile)
+        state.user
+          .updateProfile(newProfile)
           .then(() => {
             resolve()
-          }).catch((error) => {
+          })
+          .catch(error => {
             reject(error)
           })
       })
     }
   },
   mutations: {
-    logout (state) {
+    signOut (state) {
       state.isAuthenticated = false
       state.user = null
     }

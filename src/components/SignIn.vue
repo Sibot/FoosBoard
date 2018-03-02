@@ -14,14 +14,14 @@
         <input name="password" type="password" placeholder="Password" v-model="userPassword" />
       </div>
       <div class="field is-horizontal">
-        <md-button class="button md-raised md-primary" v-on:click="login()">Login</md-button>
+        <md-button class="button md-raised md-primary" v-on:click="signIn()">Login</md-button>
       </div>
       <md-button class="button md-raised" v-on:click="quickLogin()">Quick Login</md-button>
     </div>
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import UserProfile from './UserProfile'
 export default {
   components: {
@@ -38,16 +38,13 @@ export default {
     ...mapGetters(['isAuthenticated'])
   },
   methods: {
-    ...mapActions({
-      logout: 'logout'
-    }),
-    login () {
-      this.$store.dispatch('login', {email: this.userEmail, password: this.userPassword})
+    signIn () {
+      this.$store.dispatch('signIn', { email: this.userEmail, password: this.userPassword })
     },
     quickLogin () {
       this.userEmail = 'firebase@tobis.se'
       this.userPassword = 'abcdef'
-      this.login()
+      this.signIn()
     }
   }
 }
