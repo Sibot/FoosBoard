@@ -5,7 +5,7 @@ const state = {
 const getters = {}
 const actions = {
   notification (context, notification) {
-    this.notifications.push(notification)
+    state.notifications.push(notification)
     console.log(notification.message)
   }
 }

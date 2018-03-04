@@ -3,7 +3,7 @@
     <md-card>
       <md-card-header>
         <h2 class="md-title">Register a game</h2>
-        <h4 class="md-subtitle">Enter players</h4>
+        <h4 class="md-subheading">Enter players</h4>
       </md-card-header>
       <md-card-content>
         <md-field>
@@ -11,13 +11,13 @@
           <md-input type="text" name="playerName" v-model="playerName"></md-input>
         </md-field>
         <md-card-actions>
-          <md-button class="md-rasied md-primary" v-on:click="addPlayer()">Add player</md-button>
+          <md-button class="md-raised md-primary" v-on:click="addPlayer()">Add player</md-button>
         </md-card-actions>
       </md-card-content>
     </md-card>
     <md-card v-if="players.length">
-      <md-card-header>
-        <h4 class="md-subtitle">Assign players to a team</h4>
+        <md-card-header>
+        <h4 class="md-subheading">Assign players to a team</h4>
       </md-card-header>
       <md-card-content>
         <ul>
@@ -27,19 +27,22 @@
             </div>
             <md-button class="md-raised"
               v-for="team in teams" :key="team.id"
-              v-on:click="addTeamMember(team, player)">
+              @click="addTeamMember(team, player)">
                 Assign to team {{team.id}}
             </md-button>
           </li>
         </ul>
       </md-card-content>
     </md-card>
-    <md-card>
+    <md-card v-if="teamsPopulated">
+      <md-card-header>
+        <h4 class="md-subheading">Enter score</h4>
+      </md-card-header>
       <md-card-content class="md-layout md-gutter">
         <div v-for="team in teams" :key="team.id" class="md-layout-item">
           <md-card v-if="team.players.length">
             <md-card-header>
-              <h4 class="md-title">Team {{team.id}}</h4>
+              <h4 class="md-subheading">Team {{team.id}}</h4>
             </md-card-header>
             <md-card-content>
               <md-radio name="isWinner" :value="true" v-model="team.isWinner"></md-radio>
@@ -55,12 +58,15 @@
         </div>
       </md-card-content>
     </md-card>
-    <md-card>
-      <md-content>
-        <md-datepicker v-model="selectedDate"></md-datepicker>
-      </md-content>
+    <md-card v-if="teamScored">
+      <md-card-header>
+        <h4 class="md-subheading">Enter time of play</h4>
+      </md-card-header>
+      <md-card-content>
+        <md-datepicker v-model="game.playedAt" :md-disabled-dates="disabledDates"></md-datepicker>
+      </md-card-content>
       <md-card-actions>
-        <md-button class="md-raised md-primary">Save game</md-button>
+        <md-button class="md-raised md-primary" @click="saveGame()" :disabled="isInvalidGame">Save game</md-button>
       </md-card-actions>
     </md-card>
   </div>
@@ -72,15 +78,52 @@ export default {
   data () {
     return {
       id: 0,
-      game: { teams: this.teams },
+      game: { playedAt: this.selectedDate, teams: this.teams },
       players: [],
       teams: [],
       playerName: '',
-      selectedDate: new Date()
+      selectedDate: new Date(),
+      disabledDates: function (date) {
+        return date > new Date()
+      }
     }
   },
   created () {
-    this.teams.push({ id: 1, score: 0, players: [], isWinner: false }, { id: 2, score: 0, players: [], isWinner: false })
+    this.$material.locale.firstDayOfAWeek = 1
+    this.teams.push(
+      { id: 1, score: 0, players: [], isWinner: false },
+      { id: 2, score: 0, players: [], isWinner: false }
+    )
+  },
+  computed: {
+    isInvalidGame: function () {
+      if (this.teams.length !== 2) {
+        return true
+      }
+      if (this.teamsPopulated !== 2) {
+        return true
+      }
+      if (this.game.playedAt > new Date()) {
+        return true
+      }
+      if (!this.teamScored) {
+        return true
+      }
+
+      return false
+    },
+    teamsPopulated: function () {
+      let teamsWithOneOrTwoPlayers = this.teams.filter(element => {
+        return element.players.length === 1 || element.players.length === 2
+      })
+      return teamsWithOneOrTwoPlayers.length
+    },
+    teamScored: function () {
+      let teamsWithScore = this.teams.filter(element => {
+        return parseInt(element.score, 10) > 0
+      })
+      return teamsWithScore.length > 0
+    }
   },
   methods: {
     addPlayer: function () {
@@ -91,35 +134,19 @@ export default {
       team.players.push(player)
       this.players.splice(this.players.indexOf(player), 1)
     },
-    saveGame: function (game) {
-      game.playedAt = this.selectedDate
-      this.$store.commit('recordGame', game)
-    },
     newId: function () {
       this.id += 1
       return this.id
     },
-    validateGame: function () {
-      if (this.game.teams.length !== 2) {
-        return false
-      }
-      let teamsWithOneorTwoPlayers = this.game.teams.filter(element => {
-        return element.players.length > 0 || element.players.length < 3
-      })
-      if (teamsWithOneorTwoPlayers.length !== 2) {
-        return false
-      }
-      if (this.game.playedAt > new Date()) {
-        return false
-      }
-
-      return true
+    saveGame: function (game) {
+      this.$store.commit('recordGame', game)
     }
   }
 }
 </script>
 <style>
-.md-layout-item {
-  min-width: 50%;
+.md-layout.md-gutter {
+  margin-left: 0;
+  margin-right: 0;
 }
 </style>

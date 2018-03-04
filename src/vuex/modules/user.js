@@ -1,9 +1,5 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
 import appService from '../../app.service'
 import firebase from 'firebase'
-
-Vue.use(Vuex)
 
 const state = {
   isAuthenticated: false,
@@ -67,7 +63,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       state.user
         .sendEmailVerification()
-        .then(function () {
+        .then(() => {
           resolve()
         })
         .catch(function (error) {
