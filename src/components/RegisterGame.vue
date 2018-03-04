@@ -103,9 +103,10 @@ export default {
       if (this.game.teams.length !== 2) {
         return false
       }
-      if (this.game.teams.forEach(element => {
-        return element.players.length > 0 && element.players.length < 3
-      })) {
+      let teamsWithOneorTwoPlayers = this.game.teams.filter(element => {
+        return element.players.length > 0 || element.players.length < 3
+      })
+      if (teamsWithOneorTwoPlayers.length !== 2) {
         return false
       }
       if (this.game.playedAt > new Date()) {
