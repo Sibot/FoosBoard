@@ -8,7 +8,9 @@ import {
   MdButton,
   MdField,
   MdContent,
-  MdCard
+  MdCard,
+  MdRadio,
+  MdDatepicker
 } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
@@ -20,6 +22,8 @@ Vue.use(MdTabs)
 Vue.use(MdField)
 Vue.use(MdContent)
 Vue.use(MdCard)
+Vue.use(MdRadio)
+Vue.use(MdDatepicker)
 
 var config = {
   apiKey: 'AIzaSyDFqEKhb0Ac0bJTvkftlmi0oNVY5t1500o',

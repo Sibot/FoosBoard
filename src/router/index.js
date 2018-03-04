@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Game from '@/components/Game'
+import RegisterGame from '@/components/RegisterGame'
 import Blog from '@/components/Blog'
 import SignIn from '@/components/SignIn'
 import SignUp from '@/components/SignUp'
@@ -13,8 +13,8 @@ export default new Router({
   routes: [
     {
       path: '/game',
-      name: 'Game',
-      component: Game,
+      name: 'RegisterGame',
+      component: RegisterGame,
       beforeEnter: (to, from, next) => {
         if (store.getters.isAuthenticated) {
           next()

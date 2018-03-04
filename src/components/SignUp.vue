@@ -10,8 +10,8 @@
           <md-input name="email" type="email" required v-model="userEmail"></md-input>
         </md-field>
         <md-field class="">
-          <label for="password">Password</label>
-          <md-input name="password" type="password" required v-model="userPassword"></md-input>
+          <label for="userPassword">Password</label>
+          <md-input name="userPassword" type="password" required v-model="userPassword"></md-input>
         </md-field>
         <div class="error" v-if="clearFlag">{{signUpErrorMessage}}</div>
       </md-card-content>
@@ -24,7 +24,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import UserProfile from './UserProfile'
-import appService from '../app.service'
 
 export default {
   components: {

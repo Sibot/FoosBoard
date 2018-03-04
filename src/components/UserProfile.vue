@@ -28,6 +28,11 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 export default {
+  data () {
+    return {
+      displayName: ''
+    }
+  },
   methods: {
     ...mapActions({
       signOut: 'signOut',
