@@ -1,5 +1,5 @@
 import appService from '../../app.service'
-import firebase from 'firebase'
+import firebase from '../../firebaseInit'
 
 const state = {
   isAuthenticated: false,

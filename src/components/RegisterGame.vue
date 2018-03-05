@@ -63,7 +63,7 @@
         <h4 class="md-subheading">Enter time of play</h4>
       </md-card-header>
       <md-card-content>
-        <md-datepicker v-model="game.playedAt" :md-disabled-dates="disabledDates"></md-datepicker>
+        <md-datepicker v-model="selectedDate" :md-disabled-dates="disabledDates"></md-datepicker>
       </md-card-content>
       <md-card-actions>
         <md-button class="md-raised md-primary" @click="saveGame()" :disabled="isInvalidGame">Save game</md-button>
@@ -78,7 +78,6 @@ export default {
   data () {
     return {
       id: 0,
-      game: { playedAt: this.selectedDate, teams: this.teams },
       players: [],
       teams: [],
       playerName: '',
@@ -103,7 +102,7 @@ export default {
       if (this.teamsPopulated !== 2) {
         return true
       }
-      if (this.game.playedAt > new Date()) {
+      if (this.selectedDate > new Date()) {
         return true
       }
       if (!this.teamScored) {
@@ -111,6 +110,9 @@ export default {
       }
 
       return false
+    },
+    game: function () {
+      return { playedAt: this.selectedDate, teams: this.teams }
     },
     teamsPopulated: function () {
       let teamsWithOneOrTwoPlayers = this.teams.filter(element => {
@@ -138,8 +140,8 @@ export default {
       this.id += 1
       return this.id
     },
-    saveGame: function (game) {
-      this.$store.commit('recordGame', game)
+    saveGame: function () {
+      this.$store.dispatch('saveGame', this.game)
     }
   }
 }
