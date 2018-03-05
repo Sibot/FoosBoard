@@ -7,11 +7,13 @@
       </md-card-header>
       <md-card-content>
         <md-field>
-          <label for="playerName"></label>
-          <md-input type="text" name="playerName" v-model="playerName"></md-input>
+          <md-autocomplete name="player" v-model="playerName" :md-options="playersList">
+            <label>Players</label>
+          </md-autocomplete>
         </md-field>
         <md-card-actions>
           <md-button class="md-raised md-primary" v-on:click="addPlayer()">Add player</md-button>
+          <md-button class="md-raised" v-on:click="saveAddPlayer()">Save and Add player</md-button>
         </md-card-actions>
       </md-card-content>
     </md-card>
@@ -73,6 +75,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'RegisterGame',
   data () {
@@ -95,6 +98,7 @@ export default {
     )
   },
   computed: {
+    ...mapGetters(['playersList', 'playersDb']),
     isInvalidGame: function () {
       if (this.teams.length !== 2) {
         return true
@@ -128,6 +132,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['savePlayer']),
     addPlayer: function () {
       this.players.push({ id: this.newId(), name: this.playerName })
       this.playerName = ''
@@ -142,6 +147,10 @@ export default {
     },
     saveGame: function () {
       this.$store.dispatch('saveGame', this.game)
+    },
+    saveAddPlayer: function () {
+      this.savePlayer(this.playerName)
+      this.addPlayer()
     }
   }
 }

@@ -9,7 +9,10 @@ import {
   MdContent,
   MdCard,
   MdRadio,
-  MdDatepicker
+  MdDatepicker,
+  MdAutocomplete,
+  MdMenu,
+  MdList
 } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
@@ -23,17 +26,9 @@ Vue.use(MdContent)
 Vue.use(MdCard)
 Vue.use(MdRadio)
 Vue.use(MdDatepicker)
-
-// var config = {
-//   apiKey: 'AIzaSyDFqEKhb0Ac0bJTvkftlmi0oNVY5t1500o',
-//   authDomain: 'ofoosboard.firebaseapp.com',
-//   databaseURL: 'https://ofoosboard.firebaseio.com',
-//   projectId: 'ofoosboard',
-//   storageBucket: 'ofoosboard.appspot.com',
-//   messagingSenderId: '913166784999'
-// }
-
-// var firebaseApp = firebase.initializeApp(config)
+Vue.use(MdAutocomplete)
+Vue.use(MdMenu)
+Vue.use(MdList)
 
 var app = new Vue({
   el: '#app',
