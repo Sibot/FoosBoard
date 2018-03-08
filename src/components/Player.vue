@@ -1,5 +1,0 @@
-<template>
-  <div class="player">
-    {{player.name}}
-  </div>
-</template>

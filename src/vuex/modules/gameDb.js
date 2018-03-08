@@ -15,6 +15,7 @@ const getters = {
 
 const actions = {
   saveGame (context, game) {
+    console.log(game)
     state.games.push(game)
   }
 }

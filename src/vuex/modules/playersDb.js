@@ -6,7 +6,6 @@ let playersRef = db.ref('players/')
 playersRef.on('value', function (snapshot) {
   state.playersList = []
   snapshot.forEach(childSnapshot => {
-    console.log(childSnapshot.val())
     state.playersList.push(childSnapshot.val())
   })
 })

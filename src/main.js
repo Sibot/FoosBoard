@@ -30,6 +30,10 @@ Vue.use(MdAutocomplete)
 Vue.use(MdMenu)
 Vue.use(MdList)
 
+Vue.filter('alphabetical', function (array) {
+  return array.sort()
+})
+
 var app = new Vue({
   el: '#app',
   router,
