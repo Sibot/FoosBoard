@@ -1,5 +1,6 @@
 <template>
   <div>
+    <digit-selector></digit-selector>
     <md-card v-if="isAuthenticated">
        <user-profile></user-profile>
     </md-card>
@@ -27,9 +28,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import UserProfile from './UserProfile'
+import DigitSelector from './DigitSelector'
 export default {
   components: {
-    'user-profile': UserProfile
+    'user-profile': UserProfile,
+    'digit-selector': DigitSelector
   },
   data () {
     return {
