@@ -1,6 +1,6 @@
-# foosboard
+# vuetify
 
-> Foosball Scoreboard
+> A Vue.js project
 
 ## Build Setup
 

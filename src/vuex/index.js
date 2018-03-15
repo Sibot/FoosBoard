@@ -7,7 +7,7 @@ import notification from './modules/notification'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   modules: {
     user,
     notification,
@@ -15,3 +15,8 @@ export default new Vuex.Store({
     playersDb
   }
 })
+
+store.dispatch('initPlayers')
+store.dispatch('initGames')
+
+export default store

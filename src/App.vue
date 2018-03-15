@@ -1,16 +1,16 @@
 <template>
-  <div id="app">
-    <div class="header">
-      <app-header></app-header>
-    </div>
-    <router-view/>
+  <v-app>
+    <app-header></app-header>
+    <v-content>
+      <router-view/>
+    </v-content>
     <app-footer></app-footer>
-  </div>
+  </v-app>
 </template>
 
 <script>
-import AppHeader from './components/AppHeader.vue'
-import AppFooter from './components/AppFooter.vue'
+import AppHeader from './components/AppStructure/AppHeader'
+import AppFooter from './components/AppStructure/AppFooter'
 
 export default {
   name: 'App',
@@ -20,9 +20,7 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-@import '~reset-css/_reset.scss';
+<style>
 @import url('https://fonts.googleapis.com/css?family=Ubuntu+Mono|Material+Icons');
 
 body {

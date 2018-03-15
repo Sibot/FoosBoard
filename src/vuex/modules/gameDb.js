@@ -1,27 +1,50 @@
 import firebase from '../../firebaseInit'
 
 let db = firebase.database()
-let gamesRef = db.ref('games/')
+let gamesDb = db.ref('games/')
 
 const state = {
-  games: gamesRef
+  gamesList: []
 }
 
 const getters = {
-  games: state => {
-    return state.games
+  gamesList: state => {
+    return state.gamesList
+  }
+}
+
+const mutations = {
+  addGame (state, game) {
+    state.gamesList.push(game)
+  },
+  saveGame (state, game) {
+    gamesDb.push(game)
+  },
+  clearGamesList (state) {
+    state.gamesList = []
   }
 }
 
 const actions = {
+  initGames (context) {
+    gamesDb.on('value', snap => {
+      context.commit('clearGamesList')
+      snap.forEach(snap => {
+        console.log(snap)
+        var game = snap.val()
+        game.key = snap.key
+        context.commit('addGame', game)
+      })
+    })
+  },
   saveGame (context, game) {
-    console.log(game)
-    state.games.push(game)
+    context.commit('saveGame', game)
   }
 }
 
 export default {
-  state,
+  actions,
   getters,
-  actions
+  mutations,
+  state
 }

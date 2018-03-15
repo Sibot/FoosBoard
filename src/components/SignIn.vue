@@ -1,29 +1,27 @@
 <template>
-  <div>
-    <digit-selector></digit-selector>
-    <md-card v-if="isAuthenticated">
-       <user-profile></user-profile>
-    </md-card>
-    <md-card v-else>
-      <md-card-header>
-        <h2 class="md-title">Sign in!</h2>
-      </md-card-header>
-      <md-card-content>
-        <md-field>
-          <label for="email">Email</label>
-          <md-input name="email" type="email" required v-model="userEmail"></md-input>
-        </md-field>
-        <md-field>
-          <label for="userPassword">Password</label>
-          <md-input name="userPassword" type="password" required v-model="userPassword"></md-input>
-        </md-field>
-      </md-card-content>
-      <md-card-actions>
-        <md-button class="md-raised md-primary" v-on:click="signIn()">Sign in</md-button>
-        <md-button class="md-raised" v-on:click="quickLogin()">Quick Login</md-button>
-      </md-card-actions>
-    </md-card>
-  </div>
+ <v-container fluid>
+   <user-profile v-if="isAuthenticated"></user-profile>
+    <v-slide-y-transition mode="out-in">
+      <v-layout column align-center>
+        <v-form>
+          <v-text-field
+            label="email"
+            name="email"
+            v-model="userEmail"
+            required>
+          </v-text-field>
+          <v-text-field
+            label="password"
+            name="password"
+            v-model="userPassword"
+            required>
+          </v-text-field>
+          <v-btn @click="signIn">Sign In</v-btn>
+          <v-btn @click="quickLogin">Quick login</v-btn>
+        </v-form>
+      </v-layout>
+    </v-slide-y-transition>
+  </v-container>
 </template>
 <script>
 import { mapGetters } from 'vuex'

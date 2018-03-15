@@ -1,12 +1,12 @@
 <template>
-<div>
-  <div
-    v-for="digit in digits"
-    :key="digit"
-    :class="{ highlighted:highlightedDigits.includes(digit), selected: selectedDigit === digit }"
-    @click="selectDigit(digit)"
-    class="digit">{{digit}}</div>
-</div>
+  <div>
+    <div
+      v-for="digit in digits"
+      :key="digit"
+      :class="{ highlighted:highlightedDigits.includes(digit), selected: selectedDigit === digit }"
+      @click="selectDigit(digit)"
+      class="digit">{{digit}}</div>
+  </div>
 </template>
 <script>
 export default {
