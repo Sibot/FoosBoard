@@ -2,10 +2,10 @@
   <v-container fluid>
     <v-slide-y-transition mode="out-in">
       <v-layout column align-center>
-        <h2 class="md-title">Profile settings</h2>
+        <h2 class="md-title">{{ user.displayName }} Profile settings</h2>
         <div v-if="!user.emailVerified">
-          <h3 class="md-card-title">Hello {{this.user.displayName}}!</h3>
-          You logged in with {{this.user.emailVerified ? ``: `not`}} verified email {{this.user.email}}.
+          <h3 class="md-card-title">Hello {{user.displayName}}!</h3>
+          You logged in with {{user.emailVerified ? ``: `not`}} verified email {{user.email}}.
         <md-button class="md-raised" @click="sendVerificationEmail()">Send verification email</md-button>
         </div>
         <v-form>
@@ -15,7 +15,6 @@
             v-model="displayName">
           </v-text-field>
           <v-btn @click="updateProfile">Update Profile</v-btn>
-          <v-btn @click="signOut">Sign out</v-btn>
         </v-form>
       </v-layout>
     </v-slide-y-transition>
@@ -29,9 +28,11 @@ export default {
       displayName: ''
     }
   },
+  computed: {
+    ...mapGetters(['isAuthenticated', 'user'])
+  },
   methods: {
     ...mapActions({
-      signOut: 'signOut',
       sendVerificationEmail: 'sendVerificationEmail'
     }),
     updateProfile () {
@@ -56,9 +57,6 @@ export default {
           this.$store.dispatch('notification', { message: 'Unable to send verification email!' })
         })
     }
-  },
-  computed: {
-    ...mapGetters(['isAuthenticated', 'user'])
   }
 }
 </script>

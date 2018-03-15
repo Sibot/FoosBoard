@@ -2,7 +2,7 @@
  <v-container fluid>
    <user-profile v-if="isAuthenticated"></user-profile>
     <v-slide-y-transition mode="out-in">
-      <v-layout column align-center>
+      <v-layout column align-center  v-if="!isAuthenticated">
         <v-form>
           <v-text-field
             label="email"
@@ -20,11 +20,14 @@
           <v-btn @click="quickLogin">Quick login</v-btn>
         </v-form>
       </v-layout>
+      <v-layout column align-center  v-if="isAuthenticated">
+          <v-btn v-if="isAuthenticated" @click="signOut">Sign out</v-btn>
+      </v-layout>
     </v-slide-y-transition>
   </v-container>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import UserProfile from './UserProfile'
 import DigitSelector from './DigitSelector'
 export default {
@@ -43,6 +46,9 @@ export default {
     ...mapGetters(['isAuthenticated'])
   },
   methods: {
+    ...mapActions({
+      signOut: 'signOut'
+    }),
     signIn () {
       this.$store.dispatch('signIn', { email: this.userEmail, password: this.userPassword })
     },

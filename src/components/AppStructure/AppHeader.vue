@@ -44,7 +44,7 @@
           </v-list-tile-content>
         </v-list-tile>
         <v-divider light></v-divider>
-        <v-list-tile to="/signout" v-show="isAuthenticated">
+        <v-list-tile to="/signin" v-show="isAuthenticated">
           <v-list-tile-action>
             <v-icon>lock_open</v-icon>
           </v-list-tile-action>

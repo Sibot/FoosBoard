@@ -30,7 +30,6 @@ const actions = {
     gamesDb.on('value', snap => {
       context.commit('clearGamesList')
       snap.forEach(snap => {
-        console.log(snap)
         var game = snap.val()
         game.key = snap.key
         context.commit('addGame', game)

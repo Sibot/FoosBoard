@@ -1,9 +1,10 @@
 import appService from '../../app.service'
 import firebase from '../../firebaseInit'
+import 'firebase/auth'
 
 const state = {
   isAuthenticated: false,
-  user: null
+  user: firebase.auth().currentUser
 }
 
 const getters = {
@@ -11,25 +12,32 @@ const getters = {
     return state.isAuthenticated
   },
   user: state => {
-    var user = state.user
-    return user
+    return state.user
   }
 }
 const actions = {
+  initUsers (context) {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        context.commit('updateIsAuthenticated', user)
+      } else {
+        context.commit('updateIsAuthenticated')
+      }
+    })
+  },
   signOut (context) {
     context.commit('signOut')
   },
   signIn (context, credentials) {
     return new Promise((resolve, reject) => {
-      appService
-        .signIn(credentials)
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(credentials.email, credentials.password)
         .then(user => {
-          state.user = user
-          state.isAuthenticated = true
-          resolve()
+          resolve(user)
         })
-        .catch(response => {
-          reject(response)
+        .catch(error => {
+          reject(error)
         })
     })
   },
@@ -38,8 +46,7 @@ const actions = {
       appService
         .signUp(credentials)
         .then(user => {
-          state.user = user
-          state.isAuthenticated = true
+          context.commit('updateIsAuthenticated', user)
           resolve()
         })
         .catch(response => {
@@ -73,15 +80,19 @@ const actions = {
   }
 }
 const mutations = {
-  signOut (state) {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        // Todo handle success/fail
-      })
+  updateIsAuthenticated (state, newValue) {
+    if (newValue) {
+      window.localStorage.setItem('user', JSON.stringify(newValue))
+      state.isAuthenticated = true
+      state.user = newValue
+      return
+    }
+    window.localStorage.removeItem('user')
     state.isAuthenticated = false
     state.user = null
+  },
+  signOut (state) {
+    firebase.auth().signOut()
   }
 }
 

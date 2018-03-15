@@ -13,31 +13,6 @@ const appService = {
         })
     })
   },
-  signIn (credentials) {
-    return new Promise((resolve, reject) => {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(credentials.email, credentials.password)
-        .then(user => {
-          window.localStorage.setItem('user', JSON.stringify(user))
-          resolve(user)
-        })
-        .catch(function (error) {
-          reject(error)
-        })
-    })
-  },
-  signOut () {
-    return new Promise((resolve, reject) => {
-      firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          window.localStorage.removeItem('user')
-        })
-        .catch(() => {})
-    })
-  },
   signUp (credentials) {
     return new Promise((resolve, reject) => {
       firebase
@@ -46,7 +21,7 @@ const appService = {
         .then(() => {
           resolve()
         })
-        .catch(function (error) {
+        .catch(error => {
           reject(error)
         })
     })
