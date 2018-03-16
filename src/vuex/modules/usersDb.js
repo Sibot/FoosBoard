@@ -1,4 +1,3 @@
-import appService from '../../app.service'
 import firebase from '../../firebaseInit'
 import 'firebase/auth'
 
@@ -43,14 +42,14 @@ const actions = {
   },
   signUp (context, credentials) {
     return new Promise((resolve, reject) => {
-      appService
-        .signUp(credentials)
-        .then(user => {
-          context.commit('updateIsAuthenticated', user)
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(credentials.email, credentials.password)
+        .then(() => {
           resolve()
         })
-        .catch(response => {
-          reject(response)
+        .catch(error => {
+          reject(error)
         })
     })
   },
