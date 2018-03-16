@@ -68,6 +68,13 @@
     >
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title v-text="title"></v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items>
+        <v-btn flat to="/signup" v-show="!isAuthenticated">Sign up</v-btn>
+        <v-btn flat to="/signin" v-show="!isAuthenticated">Sign in</v-btn>
+        <v-btn flat to="/profile" v-show="isAuthenticated">Profile</v-btn>
+        <v-btn flat to="/signout" v-show="isAuthenticated">Sign out</v-btn>
+      </v-toolbar-items>
     </v-toolbar>
 </div>
   <!-- <nav class="nav">

@@ -1,25 +1,29 @@
 <template>
-  <div>
-    <md-card>
-      <md-card-header>
-        <h2 class="md-title">Sign up!</h2>
-      </md-card-header>
-      <md-card-content>
-        <md-field class="">
-          <label for="email">Email</label>
-          <md-input name="email" type="email" required v-model="userEmail"></md-input>
-        </md-field>
-        <md-field class="">
-          <label for="userPassword">Password</label>
-          <md-input name="userPassword" type="password" required v-model="userPassword"></md-input>
-        </md-field>
+  <v-form>
+    <v-card>
+      <v-card-title>
+        <h2>Sign up!</h2>
+      </v-card-title>
+      <v-card-text>
+          <v-text-field
+            name="email"
+            type="email"
+            label="Email"
+            required
+            v-model="userEmail"></v-text-field>
+          <v-text-field
+            name="userPassword"
+            type="password"
+            label="Password"
+            required
+            v-model="userPassword"></v-text-field>
         <div class="error" v-if="clearFlag">{{signUpErrorMessage}}</div>
-      </md-card-content>
-      <md-card-actions>
-        <md-button class="md-raised md-primary" v-on:click="signUp()">Sign up!</md-button>
-      </md-card-actions>
-    </md-card>
-  </div>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn v-on:click="signUp()">Sign up!</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-form>
 </template>
 <script>
 import { mapGetters } from 'vuex'
@@ -50,6 +54,7 @@ export default {
           this.$router.push('signIn')
         })
         .catch((error) => {
+          this.clearToken = this.userEmail + this.userPassword
           this.signUpErrorMessage = error.message
         })
 

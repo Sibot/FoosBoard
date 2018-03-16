@@ -23,7 +23,7 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css?family=Ubuntu+Mono|Material+Icons');
 
-body {
+.application {
   font-family: 'Ubuntu Mono', monospace;
 }
 </style>
