@@ -12,12 +12,15 @@
             required
             v-model="userEmail"></v-text-field>
           <v-text-field
-            name="userPassword"
-            type="password"
             label="Password"
-            required
-            v-model="userPassword"></v-text-field>
-        <div class="error" v-if="clearFlag">{{signUpErrorMessage}}</div>
+            name="password"
+            v-model="userPassword"
+            :append-icon="visiblePassword ? 'visibility' : 'visibility_off'"
+            :append-icon-cb="() => (visiblePassword = !visiblePassword)"
+            :type="visiblePassword ? 'text' : 'password'"
+            required>
+          </v-text-field>
+        <div class="error" v-if="showError">{{signUpErrorMessage}}</div>
       </v-card-text>
       <v-card-actions>
         <v-btn v-on:click="signUp()">Sign up!</v-btn>
@@ -27,7 +30,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import UserProfile from './UserProfile'
+import UserProfile from './Profile'
 
 export default {
   components: {
@@ -38,24 +41,26 @@ export default {
       userEmail: '',
       userPassword: '',
       signUpErrorMessage: '',
-      clearToken: ''
+      clearToken: '',
+      visiblePassword: false
     }
   },
   computed: {
     ...mapGetters(['isAuthenticated']),
-    clearFlag: function () {
-      return (this.userEmail + this.userPassword) !== this.clearToken
+    showError: function () {
+      return (this.userEmail + this.userPassword) === this.clearToken
     }
   },
   methods: {
     signUp () {
       this.$store.dispatch('signUp', { email: this.userEmail, password: this.userPassword })
         .then(() => {
-          this.$router.push('signIn')
+          this.$router.push('profile')
         })
         .catch((error) => {
           this.clearToken = this.userEmail + this.userPassword
           this.signUpErrorMessage = error.message
+          this.$store.dispatch('notification', error.message)
         })
 
       // this.signUpMessage = ''

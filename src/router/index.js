@@ -2,8 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import NewGame from '@/components/NewGame/NewGame'
 import Blog from '@/components/Blog'
-import SignIn from '@/components/SignIn'
-import SignUp from '@/components/SignUp'
+import SignIn from '@/components/User/SignIn'
+import SignUp from '@/components/User/SignUp'
+import Profile from '@/components/User/Profile'
 import store from '../vuex/index'
 import Index from '@/components/Index'
 
@@ -33,6 +34,18 @@ export default new Router({
       path: '/blog',
       name: 'Blog',
       component: Blog
+    },
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: Profile,
+      beforeEnter: (to, from, next) => {
+        if (store.getters.isAuthenticated) {
+          next()
+        } else {
+          next('/signin')
+        }
+      }
     },
     {
       path: '/signup',

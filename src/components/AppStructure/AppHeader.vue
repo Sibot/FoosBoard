@@ -73,21 +73,13 @@
         <v-btn flat to="/signup" v-show="!isAuthenticated">Sign up</v-btn>
         <v-btn flat to="/signin" v-show="!isAuthenticated">Sign in</v-btn>
         <v-btn flat to="/profile" v-show="isAuthenticated">Profile</v-btn>
-        <v-btn flat to="/signout" v-show="isAuthenticated">Sign out</v-btn>
+        <v-btn flat to="/signout" v-show="isAuthenticated" @click="signOut">Sign out</v-btn>
       </v-toolbar-items>
     </v-toolbar>
 </div>
-  <!-- <nav class="nav">
-    <md-tabs class="nav-list">
-        <md-tab md-sync-route v-if="isAuthenticated" md-label="Register game" to="/game" class="nav-list-item-link"></md-tab>
-        <md-tab md-sync-route md-label="Blog" to="/blog" class="nav-list-item-link"></md-tab>
-        <md-tab md-sync-route :md-label="isAuthenticatedActionText" to="/signin" class="nav-list-item-link"></md-tab>
-        <md-tab md-sync-route v-if="!isAuthenticated" md-label="Sign up" to="/signup" class="nav-list-item-link"></md-tab>
-    </md-tabs>
-  </nav> -->
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -102,6 +94,11 @@ export default {
   },
   computed: {
     ...mapGetters(['isAuthenticated'])
+  },
+  methods: {
+    ...mapActions({
+      signOut: 'signOut'
+    })
   }
 }
 </script>
