@@ -6,7 +6,7 @@ import SignIn from '@/components/User/SignIn'
 import SignUp from '@/components/User/SignUp'
 import Profile from '@/components/User/Profile'
 import store from '../vuex/index'
-import Index from '@/components/Index'
+import Index from '@/components/Index/Index'
 
 Vue.use(Router)
 
