@@ -1,10 +1,11 @@
 <template>
   <v-container fluid grid-list-md>
     <v-card>
-      <v-card-title>Last games played:</v-card-title>
+      <v-card-title>
+        <v-subheader class="headline">10 Last games played:</v-subheader></v-card-title>
       <v-card-text>
         <v-layout row wrap>
-          <v-flex v-for="game in gamesList" :key="game.key">
+          <v-flex v-for="game in topTenLatestGames" :key="game.key">
             <v-card>
               <v-card-title>
                 {{game.playedAt}}
@@ -47,18 +48,12 @@ export default {
   methods: {
     sortByScore: function (teams) {
       return teams.map(t => t).sort(function (current, next) {
-        if (current.score < next.score) {
-          return 1
-        }
-        if (current.score > next.score) {
-          return -1
-        }
-        return 0
+        return next.score - current.score
       })
     }
   },
   computed: {
-    ...mapGetters(['gamesList'])
+    ...mapGetters(['topTenLatestGames'])
   }
 }
 </script>

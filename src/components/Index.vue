@@ -2,6 +2,8 @@
   <v-layout>
     <v-flex>
       <players-list></players-list>
+    </v-flex>
+    <v-flex>
       <games-list :take=5></games-list>
     </v-flex>
   </v-layout>

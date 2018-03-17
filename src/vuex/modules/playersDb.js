@@ -27,7 +27,7 @@ const mutations = {
 
 const actions = {
   initPlayers (context) {
-    playersRef.on('value', function (snapshot) {
+    playersRef.orderByChild('name').on('value', function (snapshot) {
       context.commit('clearPlayersList')
       snapshot.forEach(snap => {
         context.commit('addPlayer', { key: snap.key, name: snap.val() })
