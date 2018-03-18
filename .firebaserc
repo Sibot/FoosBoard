@@ -1,5 +1,6 @@
 {
   "projects": {
-    "foo": "ofoosboard"
+    "foo": "ofoosboard",
+    "default": "ofoosboard"
   }
 }
