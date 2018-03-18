@@ -64,15 +64,7 @@ export default {
       step: 0,
       players: [],
       teams: [],
-      selectedDate: null,
-      newGame: {
-        playedAt: '',
-        teamOneScore: 0,
-        teamTwoScore: 0,
-        players: {
-
-        }
-      }
+      selectedDate: null
     }
   },
   created () {
