@@ -13,6 +13,12 @@
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title>{{player.name}}</v-list-tile-title>
+              <v-list-tile-sub-title>
+                Played: {{player.totalPlayed || 0}}
+              </v-list-tile-sub-title>
+              <v-list-tile-sub-title>
+                Won: {{player.totalWon || 0}}
+              </v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
         </template>

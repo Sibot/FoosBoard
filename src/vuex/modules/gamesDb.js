@@ -58,8 +58,8 @@ const actions = {
       })
     })
     gamesDb
-      .orderByChild('playedAt')
-      .limitToFirst(10)
+      .orderByKey()
+      .limitToLast(9)
       .on('value', gameSnap => {
         context.commit('clearTopTenLatestGames')
         gameSnap.forEach(gameChild => {
@@ -94,10 +94,9 @@ const actions = {
                   .equalTo(teamMember.playerId)
                   .once('value', playersSnap => {
                     playersSnap.forEach(playerSnap => {
-                      currentTeam.players.push({
-                        key: playerSnap.key,
-                        name: playerSnap.val()
-                      })
+                      var player = playerSnap.val()
+                      player.key = playerSnap.key
+                      currentTeam.players.push(player)
                     })
                   })
               })

@@ -9,7 +9,7 @@
       ".write": "auth != null"
     },
     "teamSetup": {
-      ".indexOn": "gameId",
+      ".indexOn": ["playerId", "gameId"],
       ".read": true,
       ".write": "auth != null"
     }

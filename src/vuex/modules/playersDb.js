@@ -30,7 +30,9 @@ const actions = {
     playersRef.orderByChild('name').on('value', function (snapshot) {
       context.commit('clearPlayersList')
       snapshot.forEach(snap => {
-        context.commit('addPlayer', { key: snap.key, name: snap.val() })
+        var player = snap.val()
+        player.key = snap.key
+        context.commit('addPlayer', player)
       })
     })
   },

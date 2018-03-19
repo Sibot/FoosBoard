@@ -69,7 +69,6 @@ export default {
   },
   created () {
     this.init()
-    this.selectedDate = this.getDate()
   },
   computed: {
     isInvalidGame: function () {
@@ -110,6 +109,8 @@ export default {
         { id: 1, score: 0, players: [], isWinner: false },
         { id: 2, score: 0, players: [], isWinner: false }
       ]
+      this.players = []
+      this.selectedDate = this.getDate()
       this.step = 0
     },
     saveGame: function () {

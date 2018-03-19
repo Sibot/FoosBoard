@@ -62,7 +62,7 @@ export default {
       this.players = [...this.players]
     },
     saveAddPlayer: function () {
-      this.savePlayer(this.playerName)
+      this.savePlayer({ name: this.playerName })
       this.addPlayer()
     },
     updateStep: function () {
