@@ -62,10 +62,14 @@ exports.calculatePlayerWins = functions.database
           games.forEach(gameSnap => {
             var game = gameSnap.val()
             currentPlayer.totalPlayed += 1
-            console.info('counting game: ', game.key, currentPlayer.totalPlayed)
+            console.info(
+              'counting game: ',
+              gameSnap.key,
+              currentPlayer.totalPlayed
+            )
             if (game.isWinner) {
               currentPlayer.totalWon += 1
-              console.info('count winner of game!!!!!!', currentPlayer.totalWon)
+              console.info('count winner of game:', currentPlayer.totalWon)
             }
           })
           resolve()
