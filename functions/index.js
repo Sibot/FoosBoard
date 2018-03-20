@@ -8,24 +8,55 @@ admin.initializeApp(functions.config().firebase)
 //  response.send("Hello from Firebase!");
 // });
 
+exports.segregateGameTeams = functions.database
+  .ref('/games/{id}')
+  .onCreate(event => {
+    const game = event.data.val()
+    var gameId = event.params.id
+
+    console.info('parsing game:', game, gameId)
+
+    return new Promise((resolve, reject) => {
+      game.teams.forEach((team, i, a) => {
+        console.info('parsing team: ', team)
+        team.players.forEach((player, i, a) => {
+          console.info('parsing player: ', player)
+          admin
+            .database()
+            .ref('/teamSetup')
+            .push({
+              gameId: gameId,
+              playerId: player.key,
+              team: team.id,
+              score: team.score,
+              isWinner: team.isWinner
+            })
+        })
+      })
+      resolve()
+    })
+  })
+
 exports.calculatePlayerWins = functions.database
   .ref('/teamSetup/{id}')
   .onWrite(event => {
     // Grab the current value of what was written to the Realtime Database.
-    const original = event.data.val()
-    console.info('the original', original)
-    console.info('Calculating wins for player: ', original.playerId)
+    const teamSetup = event.data.val()
+
+    console.info('the original', teamSetup)
+    console.info('Calculating wins for player: ', teamSetup.playerId)
+
     var currentPlayer = {
       totalPlayed: 0,
       totalWon: 0
     }
 
-    let winsPromise = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       admin
         .database()
         .ref('/teamSetup/')
         .orderByChild('playerId')
-        .equalTo(original.playerId)
+        .equalTo(teamSetup.playerId)
         .once('value', games => {
           console.info('counting games')
           games.forEach(gameSnap => {
@@ -39,13 +70,11 @@ exports.calculatePlayerWins = functions.database
           })
           resolve()
         })
-    })
-
-    return Promise.all([winsPromise]).then(() => {
+    }).then(() => {
       var update = {}
-      update['/players/' + original.playerId + '/totalPlayed'] =
+      update['/players/' + teamSetup.playerId + '/totalPlayed'] =
         currentPlayer.totalPlayed
-      update['/players/' + original.playerId + '/totalWon'] =
+      update['/players/' + teamSetup.playerId + '/totalWon'] =
         currentPlayer.totalWon
 
       console.info('Updating player ', currentPlayer)
