@@ -111,7 +111,7 @@ export default {
       ]
       this.players = []
       this.selectedDate = this.getDate()
-      this.step = 0
+      this.step = 1
     },
     saveGame: function () {
       this.$store.dispatch('saveGame', this.game)
