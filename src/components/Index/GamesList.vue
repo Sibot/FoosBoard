@@ -27,13 +27,6 @@ export default {
     return {}
   },
   props: ['take'],
-  methods: {
-    sortByScore: function (teams) {
-      return teams.map(t => t).sort(function (current, next) {
-        return next.score - current.score
-      })
-    }
-  },
   computed: {
     ...mapGetters(['topTenLatestGames'])
   }
