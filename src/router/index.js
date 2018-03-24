@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import NewGame from '@/components/NewGame/NewGame'
-import Blog from '@/components/Blog'
 import SignIn from '@/components/User/SignIn'
 import SignUp from '@/components/User/SignUp'
 import Profile from '@/components/User/Profile'
@@ -29,11 +28,6 @@ export default new Router({
           next('/signin')
         }
       }
-    },
-    {
-      path: '/blog',
-      name: 'Blog',
-      component: Blog
     },
     {
       path: '/profile',

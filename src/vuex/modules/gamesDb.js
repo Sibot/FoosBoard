@@ -37,7 +37,6 @@ const mutations = {
 
 const actions = {
   initGames (context) {
-
     gamesDb.once('value', snap => {
       snap.forEach(snap => {
         var game = snap.val()
@@ -51,7 +50,7 @@ const actions = {
       game.key = snap.key
       context.commit('addGame', game)
     })
-    
+
     gamesDb
       .orderByKey()
       .limitToLast(9)

@@ -1,9 +1,12 @@
 import firebase from '../../firebaseInit'
 import 'firebase/auth'
 
+let db = firebase.database()
+
 const state = {
   isAuthenticated: false,
-  user: firebase.auth().currentUser
+  user: {},
+  profile: {}
 }
 
 const getters = {
@@ -12,9 +15,15 @@ const getters = {
   },
   user: state => {
     return state.user
+  },
+  profile: state => {
+    return state.profile
   }
 }
 const actions = {
+  getProfile (context) {
+    context.commit('getProfile')
+  },
   initUsers (context) {
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
@@ -23,6 +32,8 @@ const actions = {
         context.commit('updateIsAuthenticated')
       }
     })
+
+    context.commit('getProfile')
   },
   signOut (context) {
     context.commit('signOut')
@@ -45,7 +56,7 @@ const actions = {
       firebase
         .auth()
         .createUserWithEmailAndPassword(credentials.email, credentials.password)
-        .then(() => {
+        .then(user => {
           resolve()
         })
         .catch(error => {
@@ -76,9 +87,23 @@ const actions = {
           reject(error)
         })
     })
+  },
+  setProfile (context, profile) {
+    context.commit('setProfile', profile)
   }
 }
 const mutations = {
+  getProfile (state) {
+    db.ref('users/' + state.user.uid).on('value', snap => {
+      snap.forEach(child => {
+        state.profile = child.val()
+      })
+    })
+  },
+  setProfile (state, profile) {
+    console.log(profile)
+    db.ref('users/' + state.user.uid).set(profile)
+  },
   updateIsAuthenticated (state, newValue) {
     if (newValue) {
       window.localStorage.setItem('user', JSON.stringify(newValue))
