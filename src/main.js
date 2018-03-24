@@ -21,6 +21,7 @@ import {
   VSlider,
   VStepper,
   VSubheader,
+  VSwitch,
   VToolbar,
   VTextField,
   transitions
@@ -46,6 +47,7 @@ Vue.use(Vuetify, {
     VSlider,
     VStepper,
     VSubheader,
+    VSwitch,
     VTextField,
     VToolbar,
     transitions

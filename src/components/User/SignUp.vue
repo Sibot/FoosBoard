@@ -60,7 +60,7 @@ export default {
         .catch((error) => {
           this.clearToken = this.userEmail + this.userPassword
           this.signUpErrorMessage = error.message
-          this.$store.dispatch('notification', error.message)
+          this.$store.dispatch('addNotification', error.message)
         })
 
       // this.signUpMessage = ''

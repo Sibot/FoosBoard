@@ -50,7 +50,7 @@ export default {
   methods: {
     signIn () {
       this.$store.dispatch('signIn', { email: this.userEmail, password: this.userPassword })
-        .catch((error) => this.$store.dispatch('notification', error.message))
+        .catch((error) => this.$store.dispatch('addNotification', { title: 'An error occured', body: error.message }))
     },
     quickLogin () {
       this.userEmail = 'firebase@tobis.se'
