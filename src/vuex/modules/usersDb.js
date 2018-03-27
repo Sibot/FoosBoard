@@ -1,12 +1,10 @@
 import firebase from '../../firebaseInit'
 import 'firebase/auth'
 
-let db = firebase.database()
-
 const state = {
   isAuthenticated: false,
-  user: {},
-  profile: {}
+  isLoggedIn: false,
+  user: {}
 }
 
 const getters = {
@@ -15,15 +13,9 @@ const getters = {
   },
   user: state => {
     return state.user
-  },
-  profile: state => {
-    return state.profile
   }
 }
 const actions = {
-  getProfile (context) {
-    context.commit('getProfile')
-  },
   initUsers (context) {
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
@@ -32,8 +24,6 @@ const actions = {
         context.commit('updateIsAuthenticated')
       }
     })
-
-    context.commit('getProfile')
   },
   signOut (context) {
     context.commit('signOut')
@@ -43,9 +33,6 @@ const actions = {
       firebase
         .auth()
         .signInWithEmailAndPassword(credentials.email, credentials.password)
-        .then(user => {
-          resolve(user)
-        })
         .catch(error => {
           reject(error)
         })
@@ -57,19 +44,15 @@ const actions = {
         .auth()
         .createUserWithEmailAndPassword(credentials.email, credentials.password)
         .then(user => {
-          resolve()
-        })
-        .catch(error => {
-          reject(error)
-        })
-    })
-  },
-  updateProfile (context, newProfile) {
-    return new Promise((resolve, reject) => {
-      state.user
-        .updateProfile(newProfile)
-        .then(() => {
-          resolve()
+          console.log(user)
+          firebase
+            .auth()
+            .currentUser.updateProfile({
+              displayName: credentials.displayName
+            })
+            .then(() => {
+              console.log('updatedprofile: ', credentials)
+            })
         })
         .catch(error => {
           reject(error)
@@ -87,28 +70,17 @@ const actions = {
           reject(error)
         })
     })
-  },
-  setProfile (context, profile) {
-    context.commit('setProfile', profile)
   }
 }
 const mutations = {
-  getProfile (state) {
-    db.ref('users/' + state.user.uid).on('value', snap => {
-      snap.forEach(child => {
-        state.profile = child.val()
-      })
-    })
-  },
-  setProfile (state, profile) {
-    console.log(profile)
-    db.ref('users/' + state.user.uid).set(profile)
-  },
-  updateIsAuthenticated (state, newValue) {
-    if (newValue) {
-      window.localStorage.setItem('user', JSON.stringify(newValue))
-      state.isAuthenticated = true
-      state.user = newValue
+  updateIsAuthenticated (state, user) {
+    if (user) {
+      window.localStorage.setItem('user', JSON.stringify(user))
+      state.isLoggedIn = true
+      if (user.emailVerified) {
+        state.isAuthenticated = true
+      }
+      state.user = user
       return
     }
     window.localStorage.removeItem('user')

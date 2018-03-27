@@ -17,24 +17,6 @@ const getters = {
   }
 }
 
-const mutations = {
-  addGame (state, game) {
-    state.gamesList.push(game)
-  },
-  addTopTenLatestGames (state, game) {
-    state.topTenLatestGames.push(game)
-  },
-  saveGame (state, game) {
-    gamesDb.push(game)
-  },
-  clearGamesList (state) {
-    state.gamesList = []
-  },
-  clearTopTenLatestGames (state) {
-    state.topTenLatestGames = []
-  }
-}
-
 const actions = {
   initGames (context) {
     gamesDb.once('value', snap => {
@@ -65,6 +47,24 @@ const actions = {
   },
   saveGame (context, game) {
     context.commit('saveGame', game)
+  }
+}
+
+const mutations = {
+  addGame (state, game) {
+    state.gamesList.push(game)
+  },
+  addTopTenLatestGames (state, game) {
+    state.topTenLatestGames.push(game)
+  },
+  saveGame (state, game) {
+    gamesDb.push(game)
+  },
+  clearGamesList (state) {
+    state.gamesList = []
+  },
+  clearTopTenLatestGames (state) {
+    state.topTenLatestGames = []
   }
 }
 

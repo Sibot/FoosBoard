@@ -1,6 +1,5 @@
 <template>
   <v-form>
-    <user-profile v-if="isAuthenticated"></user-profile>
     <v-card v-if="!isAuthenticated">
       <v-card-title>
         <h2>Sign in!</h2>
@@ -31,11 +30,8 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import UserProfile from './Profile'
+
 export default {
-  components: {
-    'user-profile': UserProfile
-  },
   data () {
     return {
       userEmail: '',

@@ -4,24 +4,16 @@ let db = firebase.database()
 let playersRef = db.ref('players')
 
 const state = {
-  playersList: []
+  playersList: [],
+  profile: {}
 }
 
 const getters = {
   playersList: state => {
     return state.playersList
-  }
-}
-
-const mutations = {
-  addPlayer (state, player) {
-    state.playersList.push(player)
   },
-  savePlayer (state, player) {
-    playersRef.push(player)
-  },
-  clearPlayersList (state) {
-    state.playersList = []
+  profile: state => {
+    return state.profile
   }
 }
 
@@ -38,6 +30,15 @@ const actions = {
   },
   savePlayer (context, player) {
     context.commit('savePlayer', player)
+  }
+}
+
+const mutations = {
+  addPlayer (state, player) {
+    state.playersList.push(player)
+  },
+  clearPlayersList (state) {
+    state.playersList = []
   }
 }
 

@@ -20,6 +20,12 @@
             :type="visiblePassword ? 'text' : 'password'"
             required>
           </v-text-field>
+          <v-text-field
+            name="display-name"
+            type="text"
+            label="Display name"
+            required
+            v-model="userDisplayName"></v-text-field>
         <div class="error" v-if="showError">{{signUpErrorMessage}}</div>
       </v-card-text>
       <v-card-actions>
@@ -30,16 +36,13 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import UserProfile from './Profile'
 
 export default {
-  components: {
-    'user-profile': UserProfile
-  },
   data () {
     return {
       userEmail: '',
       userPassword: '',
+      userDisplayName: '',
       signUpErrorMessage: '',
       clearToken: '',
       visiblePassword: false
@@ -53,14 +56,15 @@ export default {
   },
   methods: {
     signUp () {
-      this.$store.dispatch('signUp', { email: this.userEmail, password: this.userPassword })
+      this.$store.dispatch('signUp', { email: this.userEmail, password: this.userPassword, displayname: this.displayName })
         .then(() => {
           this.$router.push('profile')
+          this.$store.dispatch('addNotification', { title: 'Welcome', body: 'Welcome to the foosboard!' })
         })
         .catch((error) => {
           this.clearToken = this.userEmail + this.userPassword
           this.signUpErrorMessage = error.message
-          this.$store.dispatch('addNotification', error.message)
+          this.$store.dispatch('addNotification', { title: 'An error occured', body: error.message })
         })
 
       // this.signUpMessage = ''
