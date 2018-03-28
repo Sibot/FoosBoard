@@ -11,6 +11,9 @@ const getters = {
   isAuthenticated: state => {
     return state.isAuthenticated
   },
+  isLoggedIn: state => {
+    return state.isLoggedIn
+  },
   user: state => {
     return state.user
   }
@@ -46,15 +49,12 @@ const actions = {
         .auth()
         .createUserWithEmailAndPassword(credentials.email, credentials.password)
         .then(user => {
-          console.log(user, credentials)
-          firebase
-            .auth()
-            .currentUser.updateProfile({
-              displayName: credentials.displayName
-            })
-            .then(() => {
-              resolve()
-            })
+          console.log(user.uid)
+          context.commit('setProfile', {
+            uid: user.uid,
+            displayName: credentials.displayName
+          })
+          resolve()
         })
         .catch(error => {
           reject(error)
@@ -77,7 +77,6 @@ const actions = {
 const mutations = {
   updateIsAuthenticated (state, user) {
     if (user) {
-      window.localStorage.setItem('user', JSON.stringify(user))
       state.isLoggedIn = true
       if (user.emailVerified) {
         state.isAuthenticated = true
@@ -85,7 +84,6 @@ const mutations = {
       state.user = user
       return
     }
-    window.localStorage.removeItem('user')
     state.isAuthenticated = false
     state.user = null
   },

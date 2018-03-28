@@ -1,29 +1,27 @@
 <template>
   <v-container fluid>
-    <v-slide-y-transition mode="out-in">
-      <v-layout column align-center>
-        <h2>{{ displayName }} Profile settings</h2>
-        <div v-if="!user.emailVerified">
-          <h3>Hello {{displayName}}!</h3>
-          You logged in with {{user.emailVerified ? ``: `not`}} verified email {{user.email}}.
-        <v-btn @click="sendVerificationEmail()">Send verification email</v-btn>
-        </div>
-        <v-form>
-          <v-text-field
-            label="displayName"
-            name="displayName"
-            v-model="displayName">
-          </v-text-field>
-          <v-switch
-            label="Enable Notifications"
-            v-model="isNotificationsAllowed"
-            @click="notify"
-          ></v-switch>
-          <v-btn @click="setProfile">Update Profile</v-btn>
-          <v-btn @click="signOut">Sign out</v-btn>
-        </v-form>
-      </v-layout>
-    </v-slide-y-transition>
+    <v-layout column align-center>
+      <h2>Profile settings</h2>
+      <v-form v-if="!user.emailVerified">
+          <h3>Greeting {{displayName}}!</h3>
+          <p>You need to verify your email '{{user.email}}'.</p>
+          <v-btn @click="sendVerificationEmail()">Send verification email</v-btn>
+      </v-form>
+      <v-form>
+        <v-text-field
+          label="displayName"
+          name="displayName"
+          v-model="displayName">
+        </v-text-field>
+        <v-switch
+          label="Enable Notifications"
+          v-model="isNotificationsAllowed"
+          @click="notify"
+        ></v-switch>
+        <v-btn @click="setProfile">Update Profile</v-btn>
+        <v-btn @click="signOut">Sign out</v-btn>
+      </v-form>
+    </v-layout>
   </v-container>
 </template>
 <script>
@@ -60,18 +58,12 @@ export default {
       })
     },
     setProfile () {
-      let db = firebase.database()
-
-      var updateProfile = {}
-      updateProfile[`/name`] = this.displayName
-      updateProfile[`/isNotificationsAllowed`] = this.isNotificationsAllowed
-
-      db.ref(`players/${this.user.uid}/`).update(updateProfile).then(() => {
-        this.$store.dispatch('addNotification', { title: 'Profile updated successfully!', body: 'The update was successfull!' })
-      })
-        .catch((error) => {
-          this.$store.dispatch('addNotification', { title: `Unable to update profile`, body: `Error: '${error.message}'` })
-        })
+      var profile = {
+        uid: this.user.uid,
+        displayName: this.displayName,
+        isNotificationsAllowed: this.isNotificationsAllowed
+      }
+      this.$store.dispatch('setProfile', profile)
     },
     sendVerificationEmail () {
       this.$store.dispatch('sendVerificationEmail')

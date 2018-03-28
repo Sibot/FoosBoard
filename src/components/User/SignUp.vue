@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     signUp () {
-      this.$store.dispatch('signUp', { email: this.userEmail, password: this.userPassword, displayname: this.displayName })
+      this.$store.dispatch('signUp', { email: this.userEmail, password: this.userPassword, displayName: this.userDisplayName })
         .then(() => {
           this.$router.push('/profile')
           this.$store.dispatch('addNotification', { title: 'Welcome', body: 'Welcome to the foosboard!' })
