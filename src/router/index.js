@@ -34,7 +34,7 @@ export default new Router({
       name: 'Profile',
       component: Profile,
       beforeEnter: (to, from, next) => {
-        if (store.getters.isAuthenticated) {
+        if (store.getters.isLoggedIn) {
           next()
         } else {
           next('/signin')

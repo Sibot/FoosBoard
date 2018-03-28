@@ -44,7 +44,7 @@
           </v-list-tile-content>
         </v-list-tile>
         <v-divider light></v-divider>
-        <v-list-tile to="/profile" v-show="isAuthenticated">
+        <v-list-tile to="/profile" v-show="isLoggedIn">
           <v-list-tile-action>
             <v-icon>account_circle</v-icon>
           </v-list-tile-action>
@@ -52,7 +52,7 @@
             <v-list-tile-title>Profile</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile to="/signin" v-show="isAuthenticated">
+        <v-list-tile to="/signin" v-show="isLoggedIn">
           <v-list-tile-action>
             <v-icon>lock_open</v-icon>
           </v-list-tile-action>
@@ -60,7 +60,7 @@
             <v-list-tile-title @click="signOut">Sign out</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile to="/signin" v-show="!isAuthenticated">
+        <v-list-tile to="/signin" v-show="!isLoggedIn">
           <v-list-tile-action>
             <v-icon>lock</v-icon>
           </v-list-tile-action>
@@ -82,10 +82,10 @@
       </v-toolbar-items>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-btn flat to="/signup" v-show="!isAuthenticated">Sign up</v-btn>
-        <v-btn flat to="/signin" v-show="!isAuthenticated">Sign in</v-btn>
-        <v-btn flat to="/profile" v-show="isAuthenticated">Profile</v-btn>
-        <v-btn flat to="/signin" v-show="isAuthenticated" @click="signOut">Sign out</v-btn>
+        <v-btn flat to="/signup" v-show="!isLoggedIn">Sign up</v-btn>
+        <v-btn flat to="/signin" v-show="!isLoggedIn">Sign in</v-btn>
+        <v-btn flat to="/profile" v-show="isLoggedIn">Profile</v-btn>
+        <v-btn flat to="/signin" v-show="isLoggedIn" @click="signOut">Sign out</v-btn>
       </v-toolbar-items>
     </v-toolbar>
 </div>
@@ -105,7 +105,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAuthenticated'])
+    ...mapGetters(['isAuthenticated', 'isLoggedIn'])
   },
   methods: {
     ...mapActions({
