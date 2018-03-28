@@ -27,7 +27,7 @@
             <v-list-tile-title>New Game</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile to="/history" v-show="isAuthenticated">
+        <v-list-tile to="/history">
           <v-list-tile-action>
             <v-icon>history</v-icon>
           </v-list-tile-action>
@@ -35,7 +35,7 @@
             <v-list-tile-title>History</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile to="/statistics" v-show="isAuthenticated">
+        <v-list-tile to="/statistics">
           <v-list-tile-action>
             <v-icon>poll</v-icon>
           </v-list-tile-action>
@@ -44,6 +44,14 @@
           </v-list-tile-content>
         </v-list-tile>
         <v-divider light></v-divider>
+        <v-list-tile to="/profile" v-show="isAuthenticated">
+          <v-list-tile-action>
+            <v-icon>account_circle</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Profile</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
         <v-list-tile to="/signin" v-show="isAuthenticated">
           <v-list-tile-action>
             <v-icon>lock_open</v-icon>
@@ -68,6 +76,10 @@
     >
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title v-text="title"></v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items v-show="isAuthenticated">
+        <v-btn flat to="/game">Register new game</v-btn>
+      </v-toolbar-items>
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-btn flat to="/signup" v-show="!isAuthenticated">Sign up</v-btn>
