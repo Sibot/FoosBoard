@@ -10,8 +10,11 @@ admin.initializeApp(functions.config().firebase)
 // });
 exports.createPlayer = functions.auth.user().onCreate(event => {
   var uid = event.data.uid
-  var displayName = event.data.displayName
-  functions.database.ref(`/games/${uid}`).set({ name: displayName })
+  console.log(uid)
+  return admin
+    .database()
+    .ref(`/players/${uid}`)
+    .set({ isNotificationsAllowed: false })
 })
 
 exports.segregateGameTeams = functions.database
@@ -60,9 +63,7 @@ exports.calculatePlayerWins = functions.database
         .once('value', games => {
           games.forEach(gameSnap => {
             var game = gameSnap.val()
-
             currentPlayer.totalPlayed += 1
-
             if (game.isWinner) {
               currentPlayer.totalWon += 1
             }
