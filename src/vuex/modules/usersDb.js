@@ -15,6 +15,7 @@ const getters = {
     return state.user
   }
 }
+
 const actions = {
   initUsers (context) {
     firebase.auth().onAuthStateChanged(function (user) {
@@ -33,6 +34,7 @@ const actions = {
       firebase
         .auth()
         .signInWithEmailAndPassword(credentials.email, credentials.password)
+        .then(resolve)
         .catch(error => {
           reject(error)
         })
@@ -44,14 +46,14 @@ const actions = {
         .auth()
         .createUserWithEmailAndPassword(credentials.email, credentials.password)
         .then(user => {
-          console.log(user)
+          console.log(user, credentials)
           firebase
             .auth()
             .currentUser.updateProfile({
               displayName: credentials.displayName
             })
             .then(() => {
-              console.log('updatedprofile: ', credentials)
+              resolve()
             })
         })
         .catch(error => {

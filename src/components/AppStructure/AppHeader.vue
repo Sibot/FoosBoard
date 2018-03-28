@@ -49,7 +49,7 @@
             <v-icon>lock_open</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>Sign out</v-list-tile-title>
+            <v-list-tile-title @click="signOut">Sign out</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-list-tile to="/signin" v-show="!isAuthenticated">
@@ -73,7 +73,7 @@
         <v-btn flat to="/signup" v-show="!isAuthenticated">Sign up</v-btn>
         <v-btn flat to="/signin" v-show="!isAuthenticated">Sign in</v-btn>
         <v-btn flat to="/profile" v-show="isAuthenticated">Profile</v-btn>
-        <v-btn flat to="/signout" v-show="isAuthenticated" @click="signOut">Sign out</v-btn>
+        <v-btn flat to="/signin" v-show="isAuthenticated" @click="signOut">Sign out</v-btn>
       </v-toolbar-items>
     </v-toolbar>
 </div>

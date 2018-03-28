@@ -19,13 +19,13 @@ const getters = {
 
 const actions = {
   initGames (context) {
-    gamesDb.once('value', snap => {
-      snap.forEach(snap => {
-        var game = snap.val()
-        game.key = snap.key
-        context.commit('addGame', game)
-      })
-    })
+    // gamesDb.once('value', snap => {
+    //   snap.forEach(snap => {
+    //     var game = snap.val()
+    //     game.key = snap.key
+    //     context.commit('addGame', game)
+    //   })
+    // })
 
     gamesDb.on('child_added', snap => {
       var game = snap.val()
