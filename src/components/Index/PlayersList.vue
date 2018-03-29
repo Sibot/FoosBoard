@@ -12,7 +12,7 @@
               <img :src="player.avatarUrl ? player.avatarUrl : 'https://placeimg.com/100/100/people'" alt="Random person">
             </v-list-tile-avatar>
             <v-list-tile-content>
-              <v-list-tile-title>{{player.name}}</v-list-tile-title>
+              <v-list-tile-title>{{player.name || 'unknown'}}</v-list-tile-title>
               <v-list-tile-sub-title>
                 Played: {{player.totalPlayed || 0}}
               </v-list-tile-sub-title>

@@ -26,7 +26,7 @@ export default {
   data () {
     return {}
   },
-  props: ['take'],
+  props: { 'take': Number },
   computed: {
     ...mapGetters(['topTenLatestGames'])
   }
