@@ -1,10 +1,10 @@
-# vuetify
+# FoosBoard
 
-> A Vue.js project
+> A enterprise grade foosball tournament score keeper for the serious enthusiast!
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 npm install
 
