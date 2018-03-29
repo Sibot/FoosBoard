@@ -50,7 +50,6 @@ export default {
           this.$router.push('/profile')
         })
         .catch((error) => this.$store.dispatch('addNotification', { title: 'An error occured', body: error.message }))
-      this.$router.push('/profile')
     },
     quickLogin () {
       this.userEmail = 'firebase@tobis.se'

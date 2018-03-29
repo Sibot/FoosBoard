@@ -22,11 +22,7 @@ const getters = {
 const actions = {
   initUsers (context) {
     firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        context.commit('updateIsAuthenticated', user)
-      } else {
-        context.commit('updateIsAuthenticated')
-      }
+      context.commit('updateIsAuthenticated', user)
     })
   },
   signOut (context) {
@@ -85,6 +81,7 @@ const mutations = {
       return
     }
     state.isAuthenticated = false
+    state.isLoggedIn = false
     state.user = null
   },
   signOut (state) {

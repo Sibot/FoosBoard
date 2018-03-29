@@ -44,9 +44,10 @@ export default {
   methods: {
     ...mapActions(['sendVerificationEmail', 'signOut', 'addNotification']),
     notify () {
+      var allowNotificationsNotificationOptions = { title: 'Notifications enabled!', body: 'Great, you´ll now get notified of important stuff going on!', icon: 'https://png.icons8.com/ios/50/000000/badge.png' }
       this.isNotificationsAllowed = !this.isNotificationsAllowed
       if (this.isNotificationsAllowed) {
-        this.$store.dispatch('addNotification', { title: 'Notifications enabled!', body: 'Great, you´ll now get notified of important stuff going on!', icon: 'https://png.icons8.com/ios/50/000000/badge.png' })
+        this.$store.dispatch('addNotification', allowNotificationsNotificationOptions)
       }
     },
     getProfile () {

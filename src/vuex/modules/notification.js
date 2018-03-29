@@ -9,17 +9,21 @@ const getters = {
 }
 
 const actions = {
-  addNotification (context, notification) {
-    if (Notification.permission === 'granted') {
-      notify(notification)
-    } else if (Notification.permission !== 'denied') {
-      Notification.requestPermission(permission => {
-        if (permission === 'granted') {
-          notify(notification)
-        }
-      })
-    }
-    context.commit('addNotification', notification)
+  addNotification (context, notificationOptions) {
+    context.commit('addNotification', notificationOptions)
+    return new Promise((resolve, reject) => {
+      if (Notification.permission === 'granted') {
+        resolve(notify(notificationOptions))
+      } else if (Notification.permission !== 'denied') {
+        Notification.requestPermission(permission => {
+          if (permission === 'granted') {
+            resolve(notify(notificationOptions))
+          }
+        })
+      } else {
+        reject(new Error('Permission denied'))
+      }
+    })
   }
 }
 
@@ -31,8 +35,10 @@ const mutations = {
 
 let notify = options => {
   let notification = new Notification(options.title, options)
-  console.log(options)
-  setTimeout(notification.close.bind(notification), options.closeDelay || 5000)
+  if (options.closeDelay) {
+    setTimeout(notification.close.bind(notification), options.closeDelay)
+  }
+  return notification
 }
 
 export default {
