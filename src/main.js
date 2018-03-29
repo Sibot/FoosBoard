@@ -5,6 +5,7 @@ import router from './router'
 import {
   Vuetify,
   VApp,
+  VAvatar,
   VCard,
   VChip,
   VDatePicker,
@@ -31,6 +32,7 @@ import '../node_modules/vuetify/src/stylus/app.styl'
 Vue.use(Vuetify, {
   components: {
     VApp,
+    VAvatar,
     VCard,
     VChip,
     VDatePicker,

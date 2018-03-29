@@ -5,7 +5,7 @@
       <v-form v-if="!user.emailVerified">
           <h3>Greeting {{displayName}}!</h3>
           <p>You need to verify your email '{{user.email}}'.</p>
-          <v-btn @click="sendVerificationEmail()">Send verification email</v-btn>
+          <v-btn @click="sendVerificationEmail" :color="isVerificationEmailSent ? 'success' : 'warning'">Send verification email</v-btn>
       </v-form>
       <v-form>
         <v-text-field
@@ -18,8 +18,17 @@
           v-model="isNotificationsAllowed"
           @click="notify"
         ></v-switch>
-        <v-btn @click="setProfile">Update Profile</v-btn>
-        <v-btn @click="signOut">Sign out</v-btn>
+        <v-layout row>
+          <v-avatar size='50' v-show="avatarUrl" class="mr-3">
+            <img :src="avatarUrl" alt="A user avatar">
+          </v-avatar>
+          <v-text-field
+          label="Avatar URL"
+          name="avatar"
+          v-model="avatarUrl">
+        </v-text-field>
+        </v-layout>
+        <v-btn @click="setProfile" color="info" :disabled="isSaving">Update Profile</v-btn>
       </v-form>
     </v-layout>
   </v-container>
@@ -31,8 +40,11 @@ import firebase from '../../firebaseInit'
 export default {
   data () {
     return {
+      avatarUrl: '',
       displayName: '',
-      isNotificationsAllowed: false
+      isNotificationsAllowed: false,
+      isSaving: false,
+      isVerificationEmailSent: false
     }
   },
   created (owningView, myView) {
@@ -56,24 +68,31 @@ export default {
         this.profile = snap.val()
         this.displayName = this.profile.name
         this.isNotificationsAllowed = this.profile.isNotificationsAllowed
+        this.avatarUrl = this.profile.avatarUrl
       })
     },
+    profileIsSaved () {
+      this.isSaving = false
+    },
     setProfile () {
+      this.isSaving = true
       var profile = {
         uid: this.user.uid,
+        avatarUrl: this.avatarUrl,
         displayName: this.displayName,
         isNotificationsAllowed: this.isNotificationsAllowed
       }
-      this.$store.dispatch('setProfile', profile)
+      this.$store.dispatch('setProfile', profile).then(this.profileIsSaved)
     },
     sendVerificationEmail () {
       this.$store.dispatch('sendVerificationEmail')
-        .then(() => {
-          this.$store.dispatch('addNotification', { title: 'Verification email sent!' })
-        })
+        .then(this.verificationEmailSent)
         .catch((error) => {
           this.$store.dispatch('addNotification', { title: `Unable to send verification email!`, body: `Error: '${error.message}'` })
         })
+    },
+    verificationEmailSent () {
+      this.isVerificationEmailSent = !this.isVerificationEmailSent
     }
   }
 }

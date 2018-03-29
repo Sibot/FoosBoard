@@ -9,7 +9,7 @@
         <template v-for="player in playersList">
           <v-list-tile avatar :key="player.key">
             <v-list-tile-avatar>
-              <img src="https://placeimg.com/100/100/people" alt="Random person">
+              <img :src="player.avatarUrl ? player.avatarUrl : 'https://placeimg.com/100/100/people'" alt="Random person">
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title>{{player.name}}</v-list-tile-title>
