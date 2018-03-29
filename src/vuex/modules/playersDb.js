@@ -32,7 +32,13 @@ const actions = {
     context.commit('savePlayer', player)
   },
   setProfile (context, profile) {
-    context.commit('setProfile', profile)
+    var updateProfile = {}
+    if (profile.displayName) updateProfile[`/name`] = profile.displayName
+    if (profile.isNotificationsAllowed) {
+      updateProfile[`/isNotificationsAllowed`] = profile.isNotificationsAllowed
+    }
+
+    return db.ref(`players/${profile.uid}/`).update(updateProfile)
   }
 }
 
@@ -42,15 +48,6 @@ const mutations = {
   },
   clearPlayersList (state) {
     state.playersList = []
-  },
-  setProfile (state, profile) {
-    var updateProfile = {}
-    if (profile.displayName) updateProfile[`/name`] = profile.displayName
-    if (profile.isNotificationsAllowed) {
-      updateProfile[`/isNotificationsAllowed`] = profile.isNotificationsAllowed
-    }
-
-    return db.ref(`players/${profile.uid}/`).update(updateProfile)
   }
 }
 
