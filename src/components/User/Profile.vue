@@ -3,7 +3,7 @@
     <v-layout column align-center>
       <h2>Profile settings</h2>
       <v-form v-if="!user.emailVerified">
-          <h3>Greeting {{displayName}}!</h3>
+          <h3>Greetings {{displayName}}!</h3>
           <p>You need to verify your email '{{user.email}}'.</p>
           <v-btn @click="sendVerificationEmail" :color="isVerificationEmailSent ? 'success' : 'warning'">Send verification email</v-btn>
       </v-form>

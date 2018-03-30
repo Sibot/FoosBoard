@@ -27,9 +27,7 @@
 <script>
 export default {
   name: 'Game',
-  props: {
-    game: Object
-  },
+  props: ['game'],
   methods: {
     sortByScore: function (teams) {
       return teams.map(t => t).sort(function (current, next) {
