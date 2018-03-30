@@ -10,6 +10,7 @@
             type="email"
             label="Email"
             required
+            @keyup.enter="signUp"
             v-model="userEmail"></v-text-field>
           <v-text-field
             label="Password"
@@ -18,14 +19,16 @@
             :append-icon="visiblePassword ? 'visibility' : 'visibility_off'"
             :append-icon-cb="() => (visiblePassword = !visiblePassword)"
             :type="visiblePassword ? 'text' : 'password'"
+            @keyup.enter="signUp"
             required>
           </v-text-field>
           <v-text-field
             name="display-name"
             type="text"
             label="Display name"
-            required
-            v-model="userDisplayName"></v-text-field>
+            v-model="userDisplayName"
+            @keyup.enter="signUp"
+            required></v-text-field>
         <div class="error" v-if="showError">{{signUpErrorMessage}}</div>
       </v-card-text>
       <v-card-actions>

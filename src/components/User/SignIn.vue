@@ -9,6 +9,7 @@
             label="Email"
             name="email"
             v-model="userEmail"
+            @keyup.enter="signIn"
             required>
           </v-text-field>
           <v-text-field
@@ -18,6 +19,7 @@
             :append-icon="visiblePassword ? 'visibility' : 'visibility_off'"
             :append-icon-cb="() => (visiblePassword = !visiblePassword)"
             :type="visiblePassword ? 'text' : 'password'"
+            @keyup.enter="signIn"
             required>
           </v-text-field>
       </v-card-text>
