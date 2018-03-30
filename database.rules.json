@@ -1,15 +1,15 @@
 {
   "rules": {
+    "events": {
+      ".read": true,
+      ".write": "auth != null"
+    },
     "games": {
       ".read": true,
       ".write": "auth != null"
     },
     "players": {
       ".read": true,
-      ".write": "auth != null"
-    },
-    "users": {
-      ".read": "auth != null",
       ".write": "auth != null"
     },
     "teamSetup": {

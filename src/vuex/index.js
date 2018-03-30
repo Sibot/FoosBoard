@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import eventsDb from './modules/eventsDb'
 import usersDb from './modules/usersDb'
 import gamesDb from './modules/gamesDb'
 import playersDb from './modules/playersDb'
@@ -9,6 +10,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   modules: {
+    eventsDb,
     gamesDb,
     notification,
     playersDb,
@@ -19,5 +21,6 @@ const store = new Vuex.Store({
 store.dispatch('initPlayers')
 store.dispatch('initGames')
 store.dispatch('initUsers')
+store.dispatch('initEvents')
 
 export default store
