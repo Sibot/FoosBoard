@@ -8,15 +8,6 @@ admin.initializeApp(functions.config().firebase)
 // exports.helloWorld = functions.https.onRequest((request, response) => {
 //  response.send("Hello from Firebase!");
 // });
-exports.createPlayer = functions.auth.user().onCreate(event => {
-  var uid = event.data.uid
-  console.log(uid)
-  return admin
-    .database()
-    .ref(`/players/${uid}`)
-    .set({ isNotificationsAllowed: false })
-})
-
 exports.segregateGameTeams = functions.database
   .ref('/games/{id}')
   .onCreate(event => {

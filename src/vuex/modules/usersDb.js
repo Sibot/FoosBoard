@@ -39,18 +39,26 @@ const actions = {
         })
     })
   },
-  signUp (context, credentials) {
+  signUp ({ dispatch }, credentials) {
     return new Promise((resolve, reject) => {
       firebase
         .auth()
         .createUserWithEmailAndPassword(credentials.email, credentials.password)
         .then(user => {
           console.log(user.uid)
-          context.commit('setProfile', {
+          dispatch('setProfile', {
             uid: user.uid,
             displayName: credentials.displayName
           })
-          resolve()
+            .then(() => {
+              resolve()
+            })
+            .catch(error => {
+              dispatch('addNotification', {
+                title: 'Error',
+                body: error.message
+              })
+            })
         })
         .catch(error => {
           reject(error)

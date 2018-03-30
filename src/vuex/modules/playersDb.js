@@ -32,8 +32,11 @@ const actions = {
     context.commit('savePlayer', player)
   },
   setProfile (context, profile) {
+    console.log(profile)
     var updateProfile = {}
-    if (profile.displayName) updateProfile[`/name`] = profile.displayName
+    if (profile.displayName) {
+      updateProfile[`/name`] = profile.displayName
+    }
     if (profile.isNotificationsAllowed) {
       updateProfile[`/isNotificationsAllowed`] = profile.isNotificationsAllowed
     }
