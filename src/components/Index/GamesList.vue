@@ -2,7 +2,8 @@
   <v-container fluid grid-list-md>
     <v-card>
       <v-card-title>
-        <v-subheader class="headline">10 Last games played:</v-subheader></v-card-title>
+        <v-subheader class="headline">10 Last games played:</v-subheader>
+      </v-card-title>
       <v-card-text>
         <v-layout row wrap>
           <v-flex v-for="game in topTenLatestGames" :key="game.key">

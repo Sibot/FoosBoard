@@ -1,9 +1,9 @@
 <template>
   <v-layout>
-    <!-- <v-flex>
+    <v-flex>
       <events-list>
       </events-list>
-    </v-flex> -->
+    </v-flex>
     <v-flex>
       <players-list></players-list>
     </v-flex>

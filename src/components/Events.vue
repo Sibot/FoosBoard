@@ -1,17 +1,21 @@
 <template>
   <div>
-    <v-btn @click="addNewEvent">Add Event</v-btn>
+    <v-btn @click="addNewEvent" v-if="isAuthenticated">Add Event</v-btn>
     <div v-for="event in ongoingEvents" :key="event.key">
-      {{event.startedAt}} - {{event.appointedTimeFrame}} minutes {{event.secondsRemaining}} - {{event.isOngoing}}
+      <event-item :event="event"></event-item>
     </div>
   </div>
 </template>
 
 <script>
+import Event from './Event'
 import { mapGetters } from 'vuex'
 export default {
+  components: {
+    'event-item': Event
+  },
   computed: {
-    ...mapGetters(['events', 'ongoingEvents'])
+    ...mapGetters(['events', 'isAuthenticated', 'ongoingEvents'])
   },
   methods: {
     addNewEvent () {
