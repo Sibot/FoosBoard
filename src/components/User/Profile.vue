@@ -86,13 +86,11 @@ export default {
     },
     sendVerificationEmail () {
       this.$store.dispatch('sendVerificationEmail')
-        .then(this.verificationEmailSent)
+        .then(() => { this.isVerificationEmailSent = true })
         .catch((error) => {
+          this.isVerificationEmailSent = false
           this.$store.dispatch('addNotification', { title: `Unable to send verification email!`, body: `Error: '${error.message}'` })
         })
-    },
-    verificationEmailSent () {
-      this.isVerificationEmailSent = !this.isVerificationEmailSent
     }
   }
 }
