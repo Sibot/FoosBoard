@@ -13,7 +13,7 @@ const getters = {
     return state.gamesList
   },
   topTenLatestGames: state => {
-    return state.topTenLatestGames
+    return state.topTenLatestGames.reverse()
   }
 }
 

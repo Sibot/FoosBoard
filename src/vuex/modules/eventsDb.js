@@ -22,36 +22,31 @@ const actions = {
 
       Object.defineProperty(event, 'secondsRemaining', {
         get: function () {
-          return (
+          var currentTimeStamp = new Date().getTime()
+          var secondsRemaining =
             (new Date(this.startedAt + this.appointedTimeFrame * 60 * 1000) -
-              new Date().getTime()) /
+              currentTimeStamp) /
             1000
-          )
+          return secondsRemaining
         }
       })
 
       Object.defineProperty(event, 'isOngoing', {
         get: function () {
-          return (
+          var currentTimeStamp = new Date().getTime()
+          var eventIsOngoing =
             this.startedAt + this.appointedTimeFrame * 60 * 1000 >
-            new Date().getTime()
-          )
+            currentTimeStamp
+          return eventIsOngoing
         }
       })
-      if (event.isOngoing) {
-        console.log(
-          `Time remaining for ${event.key}: `,
-          event.secondsRemaining * 1000
-        )
 
-        console.log(
-          `Setting delete timer for ${
-            event.key
-          } in :  ${event.secondsRemaining * 1000} seconds.`
-        )
-        setTimeout(function () {
+      if (event.isOngoing) {
+        var timeoutId = setTimeout(function () {
           context.commit('deleteExpiredEvent', event)
         }, event.secondsRemaining * 1000)
+
+        event.timeoutId = timeoutId
         context.commit('addOngoingEvent', event)
       }
     })

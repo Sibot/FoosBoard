@@ -1,29 +1,45 @@
 <template>
-<div>
-        {{new Date(event.startedAt).toJSON()}}
-        {{event.appointedTimeFrame}} minutes 
-        {{event.secondsRemaining}}
-        {{event.isOngoing}}
-</div>
+  <v-container>
+    <v-card>
+      <v-card-text>
+        <v-list two-line>
+          <v-list-tile-content>
+            <v-list-tile-title>{{event.initiatorName}} invites to a game</v-list-tile-title>
+            <v-list-tile-sub-title>
+              In: {{secondsRemaining | secondsOrMinutes}}
+            </v-list-tile-sub-title>
+          </v-list-tile-content>
+        </v-list>
+      </v-card-text>
+    </v-card>
+  </v-container>
 </template>
 <script>
 export default {
-  created: () => {
-    this.intervalId = setInterval(this.updateTime, 1000)
-  },
-  computed: {
-    eventCountDown: () => {
-      return this.localTime - this.event.startedAt
+  filters: {
+    secondsOrMinutes: function (seconds) {
+      var time = 0
+      var unit = 'time'
+      time = Math.ceil(seconds > 60 ? seconds / 60 : seconds)
+      unit = seconds > 60 ? 'minutes' : 'seconds'
+      return `${time} ${unit}`
     }
   },
+  created: function () {
+    this.updateTime()
+    this.intervalId = setInterval(this.updateTime, 1000)
+  },
   data () {
-    this.localTime = new Date().getTime()
-    this.secondsRemaining = 0
-    this.intervalId = null
+    return {
+      secondsRemaining: 0,
+      intervalId: null
+    }
+  },
+  destroyed: function () {
+    clearInterval(this.intervalId)
   },
   methods: {
     updateTime () {
-      this.localTime = new Date().getTime()
       this.secondsRemaining = this.event.secondsRemaining
     }
   },
