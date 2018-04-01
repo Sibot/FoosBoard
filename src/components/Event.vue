@@ -1,5 +1,4 @@
 <template>
-  <v-container>
     <v-card>
       <v-card-text>
         <v-list two-line>
@@ -9,12 +8,17 @@
               In: {{secondsRemaining | secondsOrMinutes}}
             </v-list-tile-sub-title>
           </v-list-tile-content>
+          <v-list-tile-action class="text-xs-center">
+            <v-btn @click="joinEvent" dark small color="primary">
+              Join
+            </v-btn>
+          </v-list-tile-action>
         </v-list>
       </v-card-text>
     </v-card>
-  </v-container>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
   filters: {
     secondsOrMinutes: function (seconds) {
@@ -29,6 +33,9 @@ export default {
     this.updateTime()
     this.intervalId = setInterval(this.updateTime, 1000)
   },
+  computed: {
+    ...mapGetters(['isAuthenticated'])
+  },
   data () {
     return {
       secondsRemaining: 0,
@@ -39,6 +46,9 @@ export default {
     clearInterval(this.intervalId)
   },
   methods: {
+    joinEvent () {
+      this.$store.dispatch('joinEvent', this.event.key)
+    },
     updateTime () {
       this.secondsRemaining = this.event.secondsRemaining
     }

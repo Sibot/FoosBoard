@@ -1,10 +1,12 @@
 <template>
-  <div>
-    <v-btn @click="addNewEvent" v-if="isAuthenticated">Add Event</v-btn>
-    <div v-for="event in ongoingEvents" :key="event.key">
-      <event-item :event="event"></event-item>
-    </div>
-  </div>
+  <v-container>
+    <v-layout row>
+      <v-btn @click="addNewEvent" v-if="isAuthenticated">Add Event</v-btn>
+      <div v-for="event in ongoingEvents" :key="event.key">
+        <event-item :event="event"></event-item>
+      </div>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>

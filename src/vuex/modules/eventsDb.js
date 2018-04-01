@@ -53,6 +53,10 @@ const actions = {
   },
   addEvent (context, event) {
     eventsRef.push(event)
+  },
+  joinEvent (context, eventKey) {
+    console.log(context, eventKey)
+    console.log(context.rootState.getters.profile)
   }
 }
 
