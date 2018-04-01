@@ -3,13 +3,13 @@
     <v-layout column align-center>
       <h2>Profile settings</h2>
       <v-form v-if="!user.emailVerified">
-          <h3>Greetings {{displayName}}!</h3>
+          <h3>Greetings {{profile.name}}!</h3>
           <p>You need to verify your email '{{user.email}}'.</p>
           <v-btn @click="sendVerificationEmail" :color="isVerificationEmailSent ? 'success' : 'warning'">Send verification email</v-btn>
       </v-form>
       <v-form>
         <v-text-field
-          label="displayName"
+          label="Display name"
           name="displayName"
           v-model="displayName">
         </v-text-field>
@@ -35,7 +35,6 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import firebase from '../../firebaseInit'
 
 export default {
   data () {
@@ -47,11 +46,13 @@ export default {
       isVerificationEmailSent: false
     }
   },
-  created (owningView, myView) {
-    this.getProfile()
+  mounted () {
+    this.avatarUrl = this.profile.avatarUrl
+    this.displayName = this.profile.name
+    this.isNotificationsAllowed = this.profile.isNotificationsAllowed
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'user'])
+    ...mapGetters(['isAuthenticated', 'user', 'profile'])
   },
   methods: {
     ...mapActions(['sendVerificationEmail', 'signOut', 'addNotification']),
@@ -61,15 +62,6 @@ export default {
       if (this.isNotificationsAllowed) {
         this.$store.dispatch('addNotification', allowNotificationsNotificationOptions)
       }
-    },
-    getProfile () {
-      let db = firebase.database()
-      db.ref(`players/${this.user.uid}/`).on('value', snap => {
-        this.profile = snap.val()
-        this.displayName = this.profile.name
-        this.isNotificationsAllowed = this.profile.isNotificationsAllowed
-        this.avatarUrl = this.profile.avatarUrl
-      })
     },
     profileIsSaved () {
       this.isSaving = false
