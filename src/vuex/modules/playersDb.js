@@ -18,14 +18,21 @@ const getters = {
 }
 
 const actions = {
-  initPlayers (context) {
+  initPlayers ({ commit, getters }) {
+    console.log(getters)
+    console.log(getters.user.uid)
     playersRef.orderByChild('name').on('value', function (snapshot) {
-      context.commit('clearPlayersList')
+      commit('clearPlayersList')
       snapshot.forEach(snap => {
         var player = snap.val()
         player.key = snap.key
-        context.commit('addPlayer', player)
+        commit('addPlayer', player)
       })
+    })
+
+    let db = firebase.database()
+    db.ref(`players/${getters.user.uid}/`).on('value', snap => {
+      commit('setProfile', snap.val())
     })
   },
   savePlayer (context, player) {
@@ -54,6 +61,9 @@ const mutations = {
   },
   clearPlayersList (state) {
     state.playersList = []
+  },
+  setProfile (state, profile) {
+    state.profile = profile
   }
 }
 

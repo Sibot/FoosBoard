@@ -4,7 +4,7 @@ import 'firebase/auth'
 const state = {
   isAuthenticated: false,
   isLoggedIn: false,
-  user: {}
+  user: null
 }
 
 const getters = {
@@ -21,12 +21,15 @@ const getters = {
 
 const actions = {
   initUsers (context) {
-    firebase.auth().onAuthStateChanged(function (user) {
-      context.commit('updateIsAuthenticated', user)
+    return new Promise((resolve, reject) => {
+      firebase.auth().onAuthStateChanged(function (user) {
+        context.commit('updateIsAuthenticated', user)
+        resolve()
+      })
     })
   },
   signOut (context) {
-    context.commit('signOut')
+    firebase.auth().signOut()
   },
   signIn (context, credentials) {
     return new Promise((resolve, reject) => {
@@ -80,20 +83,21 @@ const actions = {
 }
 const mutations = {
   updateIsAuthenticated (state, user) {
-    if (user) {
-      state.isLoggedIn = true
-      if (user.emailVerified) {
-        state.isAuthenticated = true
+    return new Promise((resolve, reject) => {
+      if (user) {
+        state.isLoggedIn = true
+        if (user.emailVerified) {
+          state.isAuthenticated = true
+        }
+        state.user = user
+        resolve()
+        return
       }
-      state.user = user
-      return
-    }
-    state.isAuthenticated = false
-    state.isLoggedIn = false
-    state.user = null
-  },
-  signOut (state) {
-    firebase.auth().signOut()
+      state.isAuthenticated = false
+      state.isLoggedIn = false
+      state.user = null
+      reject(new Error('No user logged in.'))
+    })
   }
 }
 
