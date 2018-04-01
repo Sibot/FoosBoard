@@ -96,7 +96,6 @@ const mutations = {
       state.isAuthenticated = false
       state.isLoggedIn = false
       state.user = null
-      reject(new Error('No user logged in.'))
     })
   }
 }

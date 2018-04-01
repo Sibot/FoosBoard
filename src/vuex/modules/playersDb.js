@@ -19,8 +19,6 @@ const getters = {
 
 const actions = {
   initPlayers ({ commit, getters }) {
-    console.log(getters)
-    console.log(getters.user.uid)
     playersRef.orderByChild('name').on('value', function (snapshot) {
       commit('clearPlayersList')
       snapshot.forEach(snap => {
@@ -31,9 +29,11 @@ const actions = {
     })
 
     let db = firebase.database()
-    db.ref(`players/${getters.user.uid}/`).on('value', snap => {
-      commit('setProfile', snap.val())
-    })
+    if (getters.user) {
+      db.ref(`players/${getters.user.uid}/`).on('value', snap => {
+        commit('setProfile', snap.val())
+      })
+    }
   },
   savePlayer (context, player) {
     context.commit('savePlayer', player)

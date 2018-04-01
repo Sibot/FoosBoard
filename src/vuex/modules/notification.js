@@ -11,6 +11,9 @@ const getters = {
 const actions = {
   addNotification (context, notificationOptions) {
     context.commit('addNotification', notificationOptions)
+    if (context.getters.profile.isNotificationsAllowed) {
+      return
+    }
     return new Promise((resolve, reject) => {
       if (Notification.permission === 'granted') {
         resolve(notify(notificationOptions))
