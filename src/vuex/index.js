@@ -20,8 +20,8 @@ const store = new Vuex.Store({
 
 store.dispatch('initUsers').then(() => {
   store.dispatch('initPlayers')
+  store.dispatch('initEvents')
 })
 store.dispatch('initGames')
-store.dispatch('initEvents')
 
 export default store

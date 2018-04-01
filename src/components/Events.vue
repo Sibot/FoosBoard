@@ -17,14 +17,14 @@ export default {
     'event-item': Event
   },
   computed: {
-    ...mapGetters(['events', 'isAuthenticated', 'ongoingEvents'])
+    ...mapGetters(['events', 'isAuthenticated', 'ongoingEvents', 'profile', 'user'])
   },
   methods: {
     addNewEvent () {
       let event = {
         startedAt: new Date().getTime(),
         appointedTimeFrame: 10,
-        initiatorName: 'Tobis'
+        initiator: { name: this.profile.name, uid: this.user.uid }
       }
       this.$store.dispatch('addEvent', event)
     }

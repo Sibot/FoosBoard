@@ -4,7 +4,6 @@ let db = firebase.database()
 let eventsRef = db.ref('events')
 
 const state = {
-  events: [],
   ongoingEvents: []
 }
 
@@ -15,10 +14,28 @@ const getters = {
 
 const actions = {
   initEvents (context) {
+    console.log(context.getters.user.uid)
     eventsRef.on('child_added', snap => {
       var event = snap.val()
       event.key = snap.key
-      context.commit('addEvent', event)
+
+      var eventPlayers = eventsRef.child(`${event.key}/players`)
+      var numberOfPlayers = 0
+      var isThisUserAlreadyParticipating = false
+
+      eventPlayers.once('child_added', snap => {
+        console.log(snap.key, snap.val())
+        if (snap.key === context.getters.user.uid) {
+          isThisUserAlreadyParticipating = true
+        }
+        numberOfPlayers++
+      })
+
+      Object.defineProperty(event, 'isFull', {
+        get: function () {
+          return numberOfPlayers >= 3
+        }
+      })
 
       Object.defineProperty(event, 'secondsRemaining', {
         get: function () {
@@ -41,9 +58,24 @@ const actions = {
         }
       })
 
+      if (context.getters.user) {
+        Object.defineProperty(event, 'isThisUserAlreadyParticipating', {
+          get: () => {
+            return isThisUserAlreadyParticipating
+          }
+        })
+
+        Object.defineProperty(event, 'isThisUserTheCreator', {
+          get: () => {
+            var creatorId = event.initiator.uid
+            var userId = context.getters.user.uid
+            return creatorId === userId
+          }
+        })
+      }
       if (event.isOngoing) {
         var timeoutId = setTimeout(function () {
-          context.commit('deleteExpiredEvent', event)
+          context.commit('hideEvent', event)
         }, event.secondsRemaining * 1000)
 
         event.timeoutId = timeoutId
@@ -55,8 +87,26 @@ const actions = {
     eventsRef.push(event)
   },
   joinEvent (context, eventKey) {
-    console.log(context, eventKey)
-    console.log(context.rootState.getters.profile)
+    return new Promise((resolve, reject) => {
+      var eventPlayers = eventsRef.child(`${eventKey}/players`)
+      var numberOfPlayers = 0
+      eventPlayers.once('value', snap => {
+        snap.forEach(childSnap => {
+          numberOfPlayers++
+          console.log(numberOfPlayers, childSnap.key, childSnap.val())
+        })
+      })
+      console.log(numberOfPlayers)
+      if (numberOfPlayers >= 3) {
+        reject(new Error('Too many players!'))
+      } else {
+        eventsRef
+          .child(eventKey)
+          .child('players')
+          .child(context.getters.user.uid)
+          .set(context.getters.profile.name)
+      }
+    })
   }
 }
 
@@ -67,7 +117,7 @@ const mutations = {
   addOngoingEvent (state, event) {
     state.ongoingEvents.push(event)
   },
-  deleteExpiredEvent (state, event) {
+  hideEvent (state, event) {
     console.log(`deleting event: ${event.key}`)
     var a = state.ongoingEvents
     a.splice(a.indexOf(event), 1)
