@@ -81,6 +81,7 @@ const actions = {
     })
   },
   updateIsAuthenticated ({ commit }, user) {
+    console.log('Authentication happened in usersDb.js! whee!')
     commit('updateIsAuthenticated', user)
   }
 }
