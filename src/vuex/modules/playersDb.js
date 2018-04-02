@@ -18,7 +18,7 @@ const getters = {
 }
 
 const actions = {
-  initPlayers ({ commit, getters }) {
+  initPlayers ({ commit, dispatch, getters }) {
     playersRef.orderByChild('name').on('value', function (snapshot) {
       commit('clearPlayersList')
       snapshot.forEach(snap => {
@@ -27,19 +27,21 @@ const actions = {
         commit('addPlayer', player)
       })
     })
-
-    let db = firebase.database()
-    if (getters.user) {
-      db.ref(`players/${getters.user.uid}/`).on('value', snap => {
-        commit('setProfile', snap.val())
-      })
-    }
+    dispatch('getProfile', getters.user)
   },
   savePlayer (context, player) {
     context.commit('savePlayer', player)
   },
+  getProfile ({ getters, commit }, user) {
+    if (user) {
+      db.ref(`players/${user.uid}/`).on('value', snap => {
+        commit('setProfile', snap.val())
+      })
+      return
+    }
+    commit('setProfile', null)
+  },
   setProfile (context, profile) {
-    console.log(profile)
     var updateProfile = {}
     if (profile.displayName) {
       updateProfile[`/name`] = profile.displayName
@@ -50,8 +52,15 @@ const actions = {
     if (profile.avatarUrl) {
       updateProfile['avatarUrl'] = profile.avatarUrl
     }
-
     return db.ref(`players/${profile.uid}/`).update(updateProfile)
+  },
+  updateIsAuthenticated ({ commit, dispatch }, user) {
+    console.log('Authentication happened in playersDB.js! wreakin havoc!')
+    if (user) {
+      dispatch('getProfile', user)
+      return
+    }
+    commit('setProfile', null)
   }
 }
 

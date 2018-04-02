@@ -20,10 +20,10 @@ const getters = {
 }
 
 const actions = {
-  initUsers (context) {
+  initUsers ({ dispatch }) {
     return new Promise((resolve, reject) => {
       firebase.auth().onAuthStateChanged(function (user) {
-        context.commit('updateIsAuthenticated', user)
+        dispatch('updateIsAuthenticated', user)
         resolve()
       })
     })
@@ -79,24 +79,25 @@ const actions = {
           reject(error)
         })
     })
+  },
+  updateIsAuthenticated ({ commit }, user) {
+    console.log('Authentication happened in usersDb.js! whee!')
+    commit('updateIsAuthenticated', user)
   }
 }
 const mutations = {
   updateIsAuthenticated (state, user) {
-    return new Promise((resolve, reject) => {
-      if (user) {
-        state.isLoggedIn = true
-        if (user.emailVerified) {
-          state.isAuthenticated = true
-        }
-        state.user = user
-        resolve()
-        return
+    if (user) {
+      state.isLoggedIn = true
+      if (user.emailVerified) {
+        state.isAuthenticated = true
       }
-      state.isAuthenticated = false
-      state.isLoggedIn = false
-      state.user = null
-    })
+      state.user = user
+      return
+    }
+    state.isAuthenticated = false
+    state.isLoggedIn = false
+    state.user = null
   }
 }
 
