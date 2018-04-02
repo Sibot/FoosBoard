@@ -23,7 +23,7 @@ const actions = {
       var numberOfPlayers = 0
       var isThisUserAlreadyParticipating = false
 
-      eventPlayers.once('child_added', snap => {
+      eventPlayers.on('child_added', snap => {
         console.log(snap.key, snap.val())
         if (snap.key === context.getters.user.uid) {
           isThisUserAlreadyParticipating = true
@@ -76,6 +76,7 @@ const actions = {
       if (event.isOngoing) {
         var timeoutId = setTimeout(function () {
           context.commit('hideEvent', event)
+          eventPlayers.off()
         }, event.secondsRemaining * 1000)
 
         event.timeoutId = timeoutId
