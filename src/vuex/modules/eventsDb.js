@@ -24,7 +24,6 @@ const actions = {
       var isThisUserAlreadyParticipating = false
 
       eventPlayers.on('child_added', snap => {
-        console.log(snap.key, snap.val())
         if (snap.key === context.getters.user.uid) {
           isThisUserAlreadyParticipating = true
         }
@@ -73,7 +72,21 @@ const actions = {
           }
         })
       }
+
       if (event.isOngoing) {
+        var newEventNotification = {
+          title: 'New game invite!',
+          body: `${event.initiator.name} invites you to a game of foos!
+        Accept the challenge!`,
+          icon: '../../assets/foos.png'
+        }
+        if (!event.isThisUserTheCreator) {
+          event.notification = context.dispatch(
+            'addNotification',
+            newEventNotification
+          )
+        }
+
         var timeoutId = setTimeout(function () {
           context.commit('hideEvent', event)
           eventPlayers.off()
@@ -87,25 +100,27 @@ const actions = {
   addEvent (context, event) {
     eventsRef.push(event)
   },
-  joinEvent (context, eventKey) {
+  joinEvent (context, event) {
     return new Promise((resolve, reject) => {
-      var eventPlayers = eventsRef.child(`${eventKey}/players`)
+      var eventPlayers = eventsRef.child(`${event.key}/players`)
       var numberOfPlayers = 0
       eventPlayers.once('value', snap => {
         snap.forEach(childSnap => {
           numberOfPlayers++
-          console.log(numberOfPlayers, childSnap.key, childSnap.val())
         })
       })
-      console.log(numberOfPlayers)
-      if (numberOfPlayers >= 3) {
+      var playerLimitMet = numberOfPlayers >= 3
+
+      if (playerLimitMet) {
         reject(new Error('Too many players!'))
       } else {
         eventsRef
-          .child(eventKey)
+          .child(event.key)
           .child('players')
           .child(context.getters.user.uid)
           .set(context.getters.profile.name)
+        event.notification.close.bind(event.notification)
+        resolve()
       }
     })
   }

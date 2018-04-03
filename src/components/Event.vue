@@ -17,9 +17,10 @@
               small
               color="warning">cancel</v-btn>
             <v-btn
-              v-if="!this.event.isThisUserAlreadyParticipating
-                && !this.event.isThisUserTheCreator
-                && !this.event.isFull"
+              v-if="!isJoined
+                && !event.isThisUserAlreadyParticipating
+                && !event.isThisUserTheCreator
+                && !event.isFull"
               @click="joinEvent"
               small
               color="primary">
@@ -53,6 +54,7 @@ export default {
     return {
       secondsRemaining: 0,
       isFull: false,
+      isJoined: false,
       intervalId: null,
       isAllowedToJoin: false,
       isThisEventFull: false
@@ -66,7 +68,8 @@ export default {
       event.cancel = true
     },
     joinEvent () {
-      this.$store.dispatch('joinEvent', this.event.key)
+      this.isJoined = true
+      this.$store.dispatch('joinEvent', this.event)
     },
     updateEvent () {
       this.secondsRemaining = this.event.secondsRemaining
