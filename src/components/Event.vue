@@ -69,9 +69,6 @@ export default {
       this.$store.dispatch('joinEvent', this.event.key)
     },
     updateEvent () {
-      console.log(this.event.isThisUserAlreadyParticipating
-        , this.event.isThisUserTheCreator
-        , this.event.isFull)
       this.secondsRemaining = this.event.secondsRemaining
     }
   },
