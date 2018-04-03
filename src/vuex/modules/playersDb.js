@@ -55,7 +55,6 @@ const actions = {
     return db.ref(`players/${profile.uid}/`).update(updateProfile)
   },
   updateIsAuthenticated ({ commit, dispatch }, user) {
-    console.log('Authentication happened in playersDB.js! wreakin havoc!')
     if (user) {
       dispatch('getProfile', user)
       return

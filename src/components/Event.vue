@@ -17,10 +17,7 @@
               small
               color="warning">cancel</v-btn>
             <v-btn
-              v-if="!isJoined
-                && !event.isThisUserAlreadyParticipating
-                && !event.isThisUserTheCreator
-                && !event.isFull"
+              v-if="isAllowedToJoin"
               @click="joinEvent"
               small
               color="primary">
@@ -45,10 +42,18 @@ export default {
   },
   created: function () {
     this.updateEvent()
-    this.intervalId = setInterval(this.updateEvent, 3000)
+    this.intervalId = setInterval(this.updateEvent, 1000)
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'user'])
+    ...mapGetters(['isAuthenticated', 'user']),
+    isAllowedToJoin () {
+      return this.event &&
+        this.isAuthenticated &&
+        !this.isJoined &&
+        !this.event.isThisUserAlreadyParticipating &&
+        !this.event.isThisUserTheCreator &&
+        !this.event.isFull
+    }
   },
   data () {
     return {
@@ -56,7 +61,6 @@ export default {
       isFull: false,
       isJoined: false,
       intervalId: null,
-      isAllowedToJoin: false,
       isThisEventFull: false
     }
   },
