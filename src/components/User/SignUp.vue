@@ -62,12 +62,12 @@ export default {
       this.$store.dispatch('signUp', { email: this.userEmail, password: this.userPassword, displayName: this.userDisplayName })
         .then(() => {
           this.$router.push('/profile')
-          this.$store.dispatch('addNotification', { title: 'Welcome', body: 'Welcome to the foosboard!' })
+          this.$store.dispatch('addNotification', { title: 'Welcome', body: 'Welcome to the foosboard!', tag: 'welcome' })
         })
         .catch((error) => {
           this.clearToken = this.userEmail + this.userPassword
           this.signUpErrorMessage = error.message
-          this.$store.dispatch('addNotification', { title: 'An error occured', body: error.message })
+          this.$store.dispatch('addNotification', { title: 'An error occured', body: error.message, tag: 'error' })
         })
     }
   }

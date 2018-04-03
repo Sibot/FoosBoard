@@ -78,13 +78,11 @@ const actions = {
           title: 'New game invite!',
           body: `${event.initiator.name} invites you to a game of foos!
         Accept the challenge!`,
-          icon: '../../assets/foos.png'
+          icon: '../../assets/foos.png',
+          tag: 'event'
         }
         if (!event.isThisUserTheCreator) {
-          event.notification = context.dispatch(
-            'addNotification',
-            newEventNotification
-          )
+          context.dispatch('addNotification', newEventNotification)
         }
 
         var timeoutId = setTimeout(function () {
@@ -119,7 +117,6 @@ const actions = {
           .child('players')
           .child(context.getters.user.uid)
           .set(context.getters.profile.name)
-        event.notification.close.bind(event.notification)
         resolve()
       }
     })

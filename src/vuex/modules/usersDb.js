@@ -48,7 +48,6 @@ const actions = {
         .auth()
         .createUserWithEmailAndPassword(credentials.email, credentials.password)
         .then(user => {
-          console.log(user.uid)
           dispatch('setProfile', {
             uid: user.uid,
             displayName: credentials.displayName
@@ -59,7 +58,8 @@ const actions = {
             .catch(error => {
               dispatch('addNotification', {
                 title: 'Error',
-                body: error.message
+                body: error.message,
+                tag: 'error'
               })
             })
         })
@@ -81,7 +81,6 @@ const actions = {
     })
   },
   updateIsAuthenticated ({ commit }, user) {
-    console.log('Authentication happened in usersDb.js! whee!')
     commit('updateIsAuthenticated', user)
   }
 }
