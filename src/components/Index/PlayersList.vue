@@ -9,7 +9,7 @@
         <template v-for="player in playersList">
           <v-list-tile avatar :key="player.key">
             <v-list-tile-avatar>
-              <img :src="player.avatarUrl ? player.avatarUrl : 'https://picsum.photos/200/300/?random'" alt="Random person">
+              <img :src="player.avatarUrl ? player.avatarUrl : `https://picsum.photos/40/40/?${randomInt()}`" alt="Random person">
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title>{{player.name || 'unknown'}}</v-list-tile-title>
@@ -31,11 +31,22 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  data () {
-    return {}
-  },
   computed: {
     ...mapGetters(['playersList'])
+  },
+  methods: {
+    randomInt () {
+      // Todo implement uuid seeded number generator
+      var hash = 0
+      var i, chr
+      if (this.length === 0) return hash
+      for (i = 0; i < this.length; i++) {
+        chr = this.charCodeAt(i)
+        hash = ((hash << 5) - hash) + chr
+        hash |= 0
+      }
+      return Math.floor(Math.random(1000) * 1000)
+    }
   }
 }
 </script>
