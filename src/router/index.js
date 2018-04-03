@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Index from '@/components/Index/Index'
+import About from '@/components/About'
 import NewGame from '@/components/NewGame/NewGame'
 import SignIn from '@/components/User/SignIn'
 import SignUp from '@/components/User/SignUp'
 import Profile from '@/components/User/Profile'
 import store from '../vuex/index'
-import Index from '@/components/Index/Index'
 
 Vue.use(Router)
 
@@ -16,6 +17,11 @@ export default new Router({
       path: '/',
       name: 'Index',
       component: Index
+    },
+    {
+      path: '/about',
+      name: 'About',
+      component: About
     },
     {
       path: '/game',

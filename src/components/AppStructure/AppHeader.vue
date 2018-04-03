@@ -43,6 +43,14 @@
             <v-list-tile-title>Statistics</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile to="/about">
+          <v-list-tile-action>
+            <v-icon>info</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>About</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
         <v-divider light></v-divider>
         <v-list-tile to="/profile" v-show="isLoggedIn">
           <v-list-tile-action>
