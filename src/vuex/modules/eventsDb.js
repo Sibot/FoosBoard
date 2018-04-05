@@ -74,14 +74,14 @@ const actions = {
       }
 
       if (event.isOngoing) {
-        var newEventNotification = {
-          title: 'New game invite!',
-          body: `${event.initiator.name} invites you to a game of foos!
+        if (!(event.isThisUserTheCreator && event.isFull)) {
+          var newEventNotification = {
+            title: 'New game invite!',
+            body: `${event.initiator.name} invites you to a game of foos!
         Accept the challenge!`,
-          icon: '../../assets/foos.png',
-          tag: 'event'
-        }
-        if (!event.isThisUserTheCreator) {
+            icon: '../../assets/foos.png',
+            tag: 'event'
+          }
           context.dispatch('addNotification', newEventNotification)
         }
 
@@ -93,6 +93,8 @@ const actions = {
         event.timeoutId = timeoutId
         context.commit('addOngoingEvent', event)
       }
+
+      Object.freeze(event)
     })
   },
   addEvent (context, event) {
