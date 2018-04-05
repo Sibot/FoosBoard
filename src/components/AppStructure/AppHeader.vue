@@ -1,12 +1,11 @@
 <template>
   <div>
     <v-navigation-drawer
-      temporary
       :mini-variant="miniVariant"
       :clipped="clipped"
       v-model="drawer"
       enable-resize-watcher
-      :fixed="true"
+      :fixed="fixed"
       mobile-break-point="900"
       app
     >
@@ -99,7 +98,7 @@
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       </v-badge>
       <v-toolbar-side-icon v-else @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title v-text="title"></v-toolbar-title>
+      <a to="/"><v-toolbar-title v-text="title"></v-toolbar-title></a>
       <v-spacer></v-spacer>
       <v-toolbar-items v-show="isAuthenticated">
         <v-btn flat to="/game">Register game</v-btn>
@@ -120,11 +119,10 @@ export default {
   data () {
     return {
       clipped: true,
-      drawer: false,
-      fixed: false,
+      drawer: true,
+      fixed: true,
       miniVariant: false,
       right: true,
-      rightDrawer: false,
       title: 'Official Foosball Score Tracker'
     }
   },
