@@ -4,7 +4,10 @@
         <v-list two-line>
           <v-list-tile-content>
             <v-list-tile-title>
-              {{event.initiator.name}} invites to a game
+              <span v-if="!isThisEventFull">
+                {{event.initiator.name}} invites to a game
+              </span>
+              <span v-else>Game is on!</span>
             </v-list-tile-title>
             <v-list-tile-sub-title>
               In: {{secondsRemaining | secondsOrMinutes}}
@@ -52,13 +55,12 @@ export default {
         !this.isJoined &&
         !this.event.isThisUserAlreadyParticipating &&
         !this.event.isThisUserTheCreator &&
-        !this.event.isFull
+        !this.isThisEventFull
     }
   },
   data () {
     return {
       secondsRemaining: 0,
-      isFull: false,
       isJoined: false,
       intervalId: null,
       isThisEventFull: false
@@ -77,6 +79,7 @@ export default {
     },
     updateEvent () {
       this.secondsRemaining = this.event.secondsRemaining
+      this.isThisEventFull = this.event.isFull
     }
   },
   props: ['event']
