@@ -8,6 +8,10 @@ admin.initializeApp(functions.config().firebase)
 // exports.helloWorld = functions.https.onRequest((request, response) => {
 //  response.send("Hello from Firebase!");
 // });
+
+// You must return a Promise when performing asynchronous tasks inside a Functions such as
+// writing to the Firebase Realtime Database.
+
 exports.segregateGameTeams = functions.database
   .ref('/games/{id}')
   .onCreate(event => {
@@ -75,6 +79,39 @@ exports.calculatePlayerWins = functions.database
         .ref()
         .update(update)
     })
-    // You must return a Promise when performing asynchronous tasks inside a Functions such as
-    // writing to the Firebase Realtime Database.
   })
+
+exports.clearOldEvents = functions.database.ref('/events').onCreate(() => {
+  var pastEventKeys = []
+
+  console.info('Commencing purge of events')
+  admin
+    .database()
+    .ref('/events')
+    .once('value', eventsSnap => {
+      eventsSnap.forEach(eventSnap => {
+        var event = eventSnap.val()
+        eventTime = event.startedAt + event.appointedTimeFrame * 60 * 1000
+        console.info(new Date(eventTime).toJSON())
+        if (new Date().getTime() > eventTime) {
+          console.info(
+            `Event with key '${eventSnap.key}' is old, marked for removal.`
+          )
+          pastEventKeys.push(eventSnap.key)
+        }
+      })
+    })
+
+  console.log(`Purging ${pastEventKeys.length} events.`)
+
+  return new Promise((resolve, reject) => {
+    pastEventKeys.forEach(eventKey => {
+      console.info(`Event with key '${eventKey}' is being deleted.`)
+      admin
+        .database()
+        .ref(`/events/${eventKey}`)
+        .remove()
+    })
+    resolve()
+  })
+})
