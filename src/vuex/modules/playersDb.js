@@ -41,7 +41,7 @@ const actions = {
     }
     commit('setProfile', null)
   },
-  setProfile (context, profile) {
+  setProfile ({ getters }, profile) {
     var updateProfile = {}
     if (profile.displayName) {
       updateProfile[`/name`] = profile.displayName
@@ -52,7 +52,7 @@ const actions = {
     if (profile.avatarUrl) {
       updateProfile['/avatarUrl'] = profile.avatarUrl
     }
-    return db.ref(`players/${profile.uid}/`).update(updateProfile)
+    return db.ref(`players/${getters.user.uid}/`).update(updateProfile)
   },
   updateIsAuthenticated ({ commit, dispatch }, user) {
     if (user) {

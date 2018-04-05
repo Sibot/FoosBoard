@@ -71,7 +71,6 @@ export default {
     setProfile () {
       this.isSaving = true
       var profile = {
-        uid: this.user.uid,
         avatarUrl: this.avatarUrl,
         displayName: this.displayName,
         isNotificationsAllowed: this.isNotificationsAllowed
