@@ -50,7 +50,7 @@ const actions = {
       updateProfile[`/isNotificationsAllowed`] = profile.isNotificationsAllowed
     }
     if (profile.avatarUrl) {
-      updateProfile['avatarUrl'] = profile.avatarUrl
+      updateProfile['/avatarUrl'] = profile.avatarUrl
     }
     return db.ref(`players/${profile.uid}/`).update(updateProfile)
   },
