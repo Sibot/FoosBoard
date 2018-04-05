@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/components/Index/Index'
 import About from '@/components/About'
+import Events from '@/components/Events'
 import NewGame from '@/components/NewGame/NewGame'
 import SignIn from '@/components/User/SignIn'
 import SignUp from '@/components/User/SignUp'
@@ -27,6 +28,18 @@ export default new Router({
       path: '/game',
       name: 'NewGame',
       component: NewGame,
+      beforeEnter: (to, from, next) => {
+        if (store.getters.isAuthenticated) {
+          next()
+        } else {
+          next('/signin')
+        }
+      }
+    },
+    {
+      path: '/events',
+      name: 'Events',
+      component: Events,
       beforeEnter: (to, from, next) => {
         if (store.getters.isAuthenticated) {
           next()

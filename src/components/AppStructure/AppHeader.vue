@@ -24,7 +24,19 @@
             <v-icon>event</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>New Game</v-list-tile-title>
+            <v-list-tile-title>Register Game</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile to="/events" v-show="isAuthenticated">
+          <v-list-tile-action>
+            <v-badge right bottom v-if="ongoingEvents.length">
+              <span slot="badge">{{ongoingEvents.length}}</span>
+              <v-icon>event</v-icon>
+            </v-badge>
+            <v-icon v-else>event</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Events</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-list-tile to="/history">
@@ -82,11 +94,15 @@
       app
       :clipped-left="clipped"
     >
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title  to="/" v-text="title"></v-toolbar-title>
+      <v-badge right bottom overlap v-if="ongoingEvents.length">
+        <span slot="badge">{{ongoingEvents.length}}</span>
+        <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      </v-badge>
+      <v-toolbar-side-icon v-else @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-title v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items v-show="isAuthenticated">
-        <v-btn flat to="/game">Register new game</v-btn>
+        <v-btn flat to="/game">Register game</v-btn>
       </v-toolbar-items>
       <v-spacer></v-spacer>
       <v-toolbar-items>
@@ -113,7 +129,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'isLoggedIn'])
+    ...mapGetters(['isAuthenticated', 'isLoggedIn', 'ongoingEvents'])
   },
   methods: {
     ...mapActions({

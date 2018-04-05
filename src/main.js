@@ -6,6 +6,7 @@ import {
   Vuetify,
   VApp,
   VAvatar,
+  VBadge,
   VCard,
   VChip,
   VDatePicker,
@@ -33,6 +34,7 @@ Vue.use(Vuetify, {
   components: {
     VApp,
     VAvatar,
+    VBadge,
     VCard,
     VChip,
     VDatePicker,
