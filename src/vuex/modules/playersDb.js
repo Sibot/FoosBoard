@@ -19,27 +19,35 @@ const getters = {
 
 const actions = {
   initPlayers ({ commit, dispatch, getters }) {
-    playersRef.orderByChild('name').on('value', function (snapshot) {
-      commit('clearPlayersList')
-      snapshot.forEach(snap => {
-        var player = snap.val()
-        player.key = snap.key
-        commit('addPlayer', player)
+    return new Promise((resolve, reject) => {
+      playersRef.orderByChild('name').on('value', function (snapshot) {
+        commit('clearPlayersList')
+        snapshot.forEach(snap => {
+          var player = snap.val()
+          player.key = snap.key
+          commit('addPlayer', player)
+        })
+      })
+      dispatch('getProfile', getters.user).then(() => {
+        resolve()
       })
     })
-    dispatch('getProfile', getters.user)
   },
   savePlayer (context, player) {
     context.commit('savePlayer', player)
   },
   getProfile ({ getters, commit }, user) {
-    if (user) {
-      db.ref(`players/${user.uid}/`).on('value', snap => {
-        commit('setProfile', snap.val())
-      })
-      return
-    }
-    commit('setProfile', null)
+    return new Promise((resolve, reject) => {
+      if (user) {
+        db.ref(`players/${user.uid}/`).on('value', snap => {
+          commit('setProfile', snap.val())
+        })
+        resolve()
+        return
+      }
+      commit('setProfile', null)
+      resolve()
+    })
   },
   setProfile ({ getters }, profile) {
     var updateProfile = {}

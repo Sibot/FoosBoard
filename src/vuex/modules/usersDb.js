@@ -3,7 +3,7 @@ import 'firebase/auth'
 
 const state = {
   isAuthenticated: false,
-  isLoggedIn: false,
+  isLoggedIn: null,
   user: null
 }
 
@@ -23,8 +23,9 @@ const actions = {
   initUsers ({ dispatch }) {
     return new Promise((resolve, reject) => {
       firebase.auth().onAuthStateChanged(function (user) {
-        dispatch('updateIsAuthenticated', user)
-        resolve()
+        dispatch('updateIsAuthenticated', user).then(() => {
+          resolve()
+        })
       })
     })
   },
@@ -81,7 +82,10 @@ const actions = {
     })
   },
   updateIsAuthenticated ({ commit }, user) {
-    commit('updateIsAuthenticated', user)
+    return new Promise((resolve, reject) => {
+      commit('updateIsAuthenticated', user)
+      resolve()
+    })
   }
 }
 const mutations = {
