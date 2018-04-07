@@ -60,6 +60,12 @@ Vue.use(Vuetify, {
 
 Vue.config.productionTip = false
 
+store.dispatch('initUsers').then(() => {
+  store.dispatch('initPlayers')
+  store.dispatch('initEvents')
+  store.dispatch('initGames')
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
