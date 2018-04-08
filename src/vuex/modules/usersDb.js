@@ -2,7 +2,7 @@ import firebase from '../../firebaseInit'
 import 'firebase/auth'
 
 const state = {
-  isAuthenticated: false,
+  isAuthenticated: null,
   isLoggedIn: null,
   user: null
 }
