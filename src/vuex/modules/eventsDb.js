@@ -13,8 +13,8 @@ const getters = {
 }
 
 const actions = {
-  initEvents (context) {
-    console.log(context.getters.user.uid)
+  initEvents ({ commit, dispatch, getters }) {
+    if (!getters.isAuthenticated) return
     eventsRef.on('child_added', snap => {
       var event = snap.val()
       event.key = snap.key
@@ -24,7 +24,7 @@ const actions = {
       var isThisUserAlreadyParticipating = false
 
       eventPlayers.on('child_added', snap => {
-        if (snap.key === context.getters.user.uid) {
+        if (snap.key === getters.user.uid) {
           isThisUserAlreadyParticipating = true
         }
         numberOfPlayers++
@@ -57,7 +57,7 @@ const actions = {
         }
       })
 
-      if (context.getters.user) {
+      if (getters.user) {
         Object.defineProperty(event, 'isThisUserAlreadyParticipating', {
           get: () => {
             return isThisUserAlreadyParticipating
@@ -67,7 +67,7 @@ const actions = {
         Object.defineProperty(event, 'isThisUserTheCreator', {
           get: () => {
             var creatorId = event.initiator.uid
-            var userId = context.getters.user.uid
+            var userId = getters.user.uid
             return creatorId === userId
           }
         })
@@ -82,16 +82,16 @@ const actions = {
             icon: '../../assets/foos.png',
             tag: 'event'
           }
-          context.dispatch('addNotification', newEventNotification)
+          dispatch('addNotification', newEventNotification)
         }
 
         var timeoutId = setTimeout(function () {
-          context.commit('hideEvent', event)
+          commit('hideEvent', event)
           eventPlayers.off()
         }, event.secondsRemaining * 1000)
 
         event.timeoutId = timeoutId
-        context.commit('addOngoingEvent', event)
+        commit('addOngoingEvent', event)
       }
 
       Object.freeze(event)
