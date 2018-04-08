@@ -3,7 +3,7 @@
     <v-layout column align-center>
       <h2>Profile settings</h2>
       <v-form v-if="!user.emailVerified">
-          <h3>Greetings {{profile.name}}!</h3>
+          <h3>Greetings {{displayName}}!</h3>
           <p>You need to verify your email '{{user.email}}'.</p>
           <v-btn @click="sendVerificationEmail" :color="isVerificationEmailSent ? 'success' : 'warning'">Send verification email</v-btn>
       </v-form>
@@ -35,7 +35,6 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-
 export default {
   data () {
     return {
@@ -46,13 +45,17 @@ export default {
       isVerificationEmailSent: false
     }
   },
-  mounted () {
-    this.avatarUrl = this.profile.avatarUrl
-    this.displayName = this.profile.name
-    this.isNotificationsAllowed = this.profile.isNotificationsAllowed
+  created () {
+    this.$store.dispatch('getProfile').then((profile) => {
+      if (profile) {
+        this.avatarUrl = profile.avatarUrl
+        this.displayName = profile.name
+        this.isNotificationsAllowed = profile.isNotificationsAllowed
+      }
+    })
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'user', 'profile'])
+    ...mapGetters(['user'])
   },
   methods: {
     ...mapActions(['sendVerificationEmail', 'signOut', 'addNotification']),
