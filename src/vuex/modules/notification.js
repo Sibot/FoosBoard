@@ -11,7 +11,12 @@ const getters = {
 const actions = {
   addNotification (context, notificationOptions) {
     context.commit('addNotification', notificationOptions)
-    if (!context.getters.profile.isNotificationsAllowed) {
+    if (
+      !(
+        context.getters.profile &&
+        context.getters.profile.isNotificationsAllowed
+      )
+    ) {
       return
     }
     return new Promise((resolve, reject) => {
