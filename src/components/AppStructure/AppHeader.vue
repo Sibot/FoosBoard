@@ -93,7 +93,7 @@
       app
       :clipped-left="clipped"
     >
-      <v-badge right bottom overlap v-if="ongoingEvents.length">
+      <v-badge right bottom overlap v-if="ongoingEvents.length && isAuthenticated">
         <span slot="badge">{{ongoingEvents.length}}</span>
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       </v-badge>
