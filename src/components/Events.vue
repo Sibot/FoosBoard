@@ -21,11 +21,15 @@ export default {
   },
   methods: {
     addNewEvent () {
+      const uid = this.user.uid
+
       let event = {
         startedAt: new Date().getTime(),
         appointedTimeFrame: 10,
-        initiator: { name: this.profile.name, uid: this.user.uid }
+        initiator: { name: this.profile.name, uid: uid },
+        players: {}
       }
+      event.players[uid] = this.profile.name
       this.$store.dispatch('addEvent', event)
     }
   }

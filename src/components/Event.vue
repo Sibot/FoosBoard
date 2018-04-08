@@ -71,11 +71,13 @@ export default {
   },
   methods: {
     cancelEvent () {
-      event.cancel = true
+      this.$store.dispatch('cancelEvent', this.event)
     },
     joinEvent () {
       this.isJoined = true
-      this.$store.dispatch('joinEvent', this.event)
+      this.$store.dispatch('joinEvent', this.event).catch((error) => {
+        this.$store.dispatch('addNotification', { title: 'I`m sorry ', body: error.message, tag: 'error' })
+      })
     },
     updateEvent () {
       this.secondsRemaining = this.event.secondsRemaining

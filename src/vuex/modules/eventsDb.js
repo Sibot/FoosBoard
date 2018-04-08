@@ -2,19 +2,36 @@ import firebase from '../../firebaseInit'
 
 let db = firebase.database()
 let eventsRef = db.ref('events')
+const maxPlayers = 4
 
 const state = {
   ongoingEvents: []
 }
 
 const getters = {
-  events: state => state.events,
   ongoingEvents: state => state.ongoingEvents
 }
 
 const actions = {
   initEvents ({ commit, dispatch, getters }) {
     if (!getters.isAuthenticated) return
+    eventsRef.on('child_removed', snap => {
+      var eventKey = snap.key
+      var events = getters.ongoingEvents
+      var event = events.find((v, i) => {
+        return v.key === eventKey ? v : false
+      })
+      if (event.isOngoing && !event.isFull) {
+        dispatch('addNotification', {
+          title: 'Game canceled',
+          body: `The game invitation by ${
+            event.initiator.name
+          } has been withdrawn`
+        })
+      }
+      events.splice(events.indexOf(event), 1)
+    })
+
     eventsRef.on('child_added', snap => {
       var event = snap.val()
       event.key = snap.key
@@ -32,7 +49,7 @@ const actions = {
 
       Object.defineProperty(event, 'isFull', {
         get: function () {
-          return numberOfPlayers >= 3
+          return numberOfPlayers >= maxPlayers
         }
       })
 
@@ -74,23 +91,35 @@ const actions = {
       }
 
       if (event.isOngoing) {
-        if (!(event.isThisUserTheCreator && event.isFull)) {
+        if (
+          !(
+            event.isThisUserTheCreator &&
+            event.isFull &&
+            isThisUserAlreadyParticipating
+          )
+        ) {
           var newEventNotification = {
             title: 'New game invite!',
             body: `${event.initiator.name} invites you to a game of foos!
         Accept the challenge!`,
-            icon: '../../assets/foos.png',
+            icon: '../../../assets/logo.png',
             tag: 'event'
           }
           dispatch('addNotification', newEventNotification)
         }
 
-        var timeoutId = setTimeout(function () {
+        // var timeoutId = setTimeout(function () {
+        //   commit('hideEvent', event)
+        //   eventPlayers.off()
+        // }, event.secondsRemaining * 1000)
+
+        // event.timeoutId = timeoutId
+
+        event.timeout = createTimeout(function () {
           commit('hideEvent', event)
           eventPlayers.off()
         }, event.secondsRemaining * 1000)
 
-        event.timeoutId = timeoutId
         commit('addOngoingEvent', event)
       }
 
@@ -99,6 +128,10 @@ const actions = {
   },
   addEvent (context, event) {
     eventsRef.push(event)
+  },
+  cancelEvent (context, event) {
+    event.timeout.trigger()
+    eventsRef.child(event.key).remove()
   },
   joinEvent (context, event) {
     return new Promise((resolve, reject) => {
@@ -109,14 +142,11 @@ const actions = {
           numberOfPlayers++
         })
       })
-      var playerLimitMet = numberOfPlayers >= 3
 
-      if (playerLimitMet) {
+      if (numberOfPlayers >= maxPlayers) {
         reject(new Error('Too many players!'))
       } else {
-        eventsRef
-          .child(event.key)
-          .child('players')
+        eventPlayers
           .child(context.getters.user.uid)
           .set(context.getters.profile.name)
         resolve()
@@ -144,4 +174,18 @@ export default {
   getters,
   mutations,
   state
+}
+
+function createTimeout (handler, delay) {
+  var timeoutId
+  timeoutId = setTimeout(handler, delay)
+  return {
+    clear: () => {
+      clearTimeout(timeoutId)
+    },
+    trigger: () => {
+      clearTimeout(timeoutId)
+      handler()
+    }
+  }
 }
