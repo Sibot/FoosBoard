@@ -49,9 +49,14 @@ const actions = {
   },
   setProfile ({ getters }, profile) {
     var updateProfile = {}
-    updateProfile[`/name`] = profile.displayName
+    if (profile.displayName) {
+      updateProfile[`/name`] = profile.displayName
+    }
+    if (profile.avatarUrl) {
+      updateProfile['/avatarUrl'] = profile.avatarUrl
+    }
     updateProfile[`/isNotificationsAllowed`] = profile.isNotificationsAllowed
-    updateProfile['/avatarUrl'] = profile.avatarUrl
+
     return db.ref(`players/${getters.user.uid}/`).update(updateProfile)
   },
   updateIsAuthenticated ({ commit, dispatch }, user) {
