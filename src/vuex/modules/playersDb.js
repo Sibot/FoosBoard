@@ -5,7 +5,7 @@ let playersRef = db.ref('players')
 
 const state = {
   playersList: [],
-  profile: {}
+  profile: null
 }
 
 const getters = {
@@ -27,8 +27,7 @@ const actions = {
           player.key = snap.key
           commit('addPlayer', player)
         })
-      })
-      dispatch('getProfile', getters.user).then(() => {
+        dispatch('getProfile')
         resolve()
       })
     })
@@ -36,38 +35,27 @@ const actions = {
   savePlayer (context, player) {
     context.commit('savePlayer', player)
   },
-  getProfile ({ getters, commit }, user) {
+  getProfile ({ getters, commit }) {
     return new Promise((resolve, reject) => {
-      if (user) {
-        db.ref(`players/${user.uid}/`).on('value', snap => {
-          commit('setProfile', snap.val())
+      let profile = null
+      if (getters.user) {
+        db.ref(`players/${getters.user.uid}/`).on('value', snap => {
+          profile = snap.val()
         })
-        resolve()
-        return
       }
-      commit('setProfile', null)
-      resolve()
+      commit('setProfile', profile)
+      resolve(profile)
     })
   },
   setProfile ({ getters }, profile) {
     var updateProfile = {}
-    if (profile.displayName) {
-      updateProfile[`/name`] = profile.displayName
-    }
-    if (profile.isNotificationsAllowed) {
-      updateProfile[`/isNotificationsAllowed`] = profile.isNotificationsAllowed
-    }
-    if (profile.avatarUrl) {
-      updateProfile['/avatarUrl'] = profile.avatarUrl
-    }
+    updateProfile[`/name`] = profile.displayName
+    updateProfile[`/isNotificationsAllowed`] = profile.isNotificationsAllowed
+    updateProfile['/avatarUrl'] = profile.avatarUrl
     return db.ref(`players/${getters.user.uid}/`).update(updateProfile)
   },
   updateIsAuthenticated ({ commit, dispatch }, user) {
-    if (user) {
-      dispatch('getProfile', user)
-      return
-    }
-    commit('setProfile', null)
+    dispatch('getProfile')
   }
 }
 
