@@ -2,14 +2,14 @@
   <v-container fluid grid-list-md>
   <v-card>
     <v-card-title>
-      <v-subheader class="headline">Players</v-subheader>
+      <v-subheader class="headline">{{playersList.length || 'No'}} Players</v-subheader>
     </v-card-title>
     <v-card-text>
-      <v-list two-line>
+      <v-list two-line v-if="playersList.length">
         <template v-for="player in playersList">
           <v-list-tile avatar :key="player.key">
             <v-list-tile-avatar>
-              <img :src="player.avatarUrl ? player.avatarUrl : `https://picsum.photos/40/40/?${randomInt()}`" alt="Random person">
+              <img :src="player.avatarUrl || `https://picsum.photos/40/40/?${randomInt()}`" alt="Random person">
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title>{{player.name || 'unknown'}}</v-list-tile-title>
