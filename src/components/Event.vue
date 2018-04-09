@@ -5,7 +5,7 @@
           <v-list-tile-content>
             <v-list-tile-title>
               <span v-if="!isThisEventFull">
-                {{event.initiator.name}} invites to a game
+                {{event.isThisUserTheCreator ? 'You invited' : `${event.initiator.name} invites`}}  to a game
               </span>
               <span v-else>Game is on!</span>
             </v-list-tile-title>

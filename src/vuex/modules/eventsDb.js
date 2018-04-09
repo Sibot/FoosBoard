@@ -21,6 +21,7 @@ const actions = {
       var event = events.find((v, i) => {
         return v.key === eventKey ? v : false
       })
+      console.log(event)
       if (event.isOngoing && !event.isFull) {
         dispatch('addNotification', {
           title: 'Game canceled',
@@ -29,7 +30,7 @@ const actions = {
           } has been withdrawn`
         })
       }
-      events.splice(events.indexOf(event), 1)
+      event.timeout.trigger()
     })
 
     eventsRef.on('child_added', snap => {
@@ -93,8 +94,8 @@ const actions = {
       if (event.isOngoing) {
         if (
           !(
-            event.isThisUserTheCreator &&
-            event.isFull &&
+            event.isThisUserTheCreator ||
+            event.isFull ||
             isThisUserAlreadyParticipating
           )
         ) {
@@ -102,7 +103,7 @@ const actions = {
             title: 'New game invite!',
             body: `${event.initiator.name} invites you to a game of foos!
         Accept the challenge!`,
-            icon: '../../../assets/logo.png',
+            icon: '@/assets/foos.png',
             tag: 'event'
           }
           dispatch('addNotification', newEventNotification)
@@ -130,7 +131,6 @@ const actions = {
     eventsRef.push(event)
   },
   cancelEvent (context, event) {
-    event.timeout.trigger()
     eventsRef.child(event.key).remove()
   },
   joinEvent (context, event) {
