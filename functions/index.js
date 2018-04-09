@@ -1,7 +1,7 @@
 const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 
-admin.initializeApp(functions.config().firebase)
+admin.initializeApp()
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
@@ -14,9 +14,9 @@ admin.initializeApp(functions.config().firebase)
 
 exports.segregateGameTeams = functions.database
   .ref('/games/{id}')
-  .onCreate(event => {
-    const game = event.data.val()
-    var gameId = event.params.id
+  .onCreate((snap, context) => {
+    const game = snap.val()
+    var gameId = context.params.id
 
     return new Promise((resolve, reject) => {
       game.teams.forEach(team => {
@@ -40,9 +40,8 @@ exports.segregateGameTeams = functions.database
 
 exports.calculatePlayerWins = functions.database
   .ref('/teamSetup/{id}')
-  .onWrite(event => {
-    // Grab the current value of what was written to the Realtime Database.
-    const teamSetup = event.data.val()
+  .onWrite((change, context) => {
+    const teamSetup = change.after.val()
 
     var currentPlayer = {
       totalPlayed: 0,
@@ -81,15 +80,17 @@ exports.calculatePlayerWins = functions.database
     })
   })
 
-exports.clearOldEvents = functions.database.ref('/events').onCreate(() => {
-  var pastEventKeys = []
+exports.clearOldEvents = functions.database
+  .ref('/events')
+  .onCreate((snap, context) => {
+    var pastEventKeys = {}
 
-  console.info('Commencing purge of events')
-  admin
-    .database()
-    .ref('/events')
-    .once('value', eventsSnap => {
-      eventsSnap.forEach(eventSnap => {
+    console.info('Commencing purge of events')
+
+    admin
+      .database()
+      .ref('events')
+      .once('child_added', eventsSnap => {
         var event = eventSnap.val()
         eventTime = event.startedAt + event.appointedTimeFrame * 60 * 1000
         console.info(new Date(eventTime).toJSON())
@@ -97,21 +98,11 @@ exports.clearOldEvents = functions.database.ref('/events').onCreate(() => {
           console.info(
             `Event with key '${eventSnap.key}' is old, marked for removal.`
           )
-          pastEventKeys.push(eventSnap.key)
+          pastEventKeys[`/events/${eventKey}`] = null
         }
       })
-    })
 
-  console.log(`Purging ${pastEventKeys.length} events.`)
+    console.log(`Purging ${pastEventKeys.length} events.`)
 
-  return new Promise((resolve, reject) => {
-    pastEventKeys.forEach(eventKey => {
-      console.info(`Event with key '${eventKey}' is being deleted.`)
-      admin
-        .database()
-        .ref(`/events/${eventKey}`)
-        .remove()
-    })
-    resolve()
+    return admin.database().update(pastEventKeys)
   })
-})
