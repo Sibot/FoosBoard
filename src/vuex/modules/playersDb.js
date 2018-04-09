@@ -49,15 +49,15 @@ const actions = {
   },
   setProfile ({ getters }, profile) {
     var updateProfile = {}
-    if (profile.displayName) {
-      updateProfile[`/name`] = profile.displayName
-    }
-    if (profile.avatarUrl) {
-      updateProfile['/avatarUrl'] = profile.avatarUrl
-    }
-    updateProfile[`/isNotificationsAllowed`] = profile.isNotificationsAllowed
+    if (profile.displayName) updateProfile[`/name`] = profile.displayName
 
-    return db.ref(`players/${getters.user.uid}/`).update(updateProfile)
+    if (profile.avatarUrl) updateProfile['/avatarUrl'] = profile.avatarUrl
+
+    if (profile.isNotificationsAllowed !== undefined) { updateProfile[`/isNotificationsAllowed`] = profile.isNotificationsAllowed }
+
+    getters.userPromise.then(() => {
+      return db.ref(`players/${getters.user.uid}/`).update(updateProfile)
+    })
   },
   updateIsAuthenticated ({ commit, dispatch }, user) {
     dispatch('getProfile')

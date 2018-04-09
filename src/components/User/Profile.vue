@@ -5,7 +5,8 @@
       <v-form v-if="!user.emailVerified">
           <h3>Greetings {{displayName}}!</h3>
           <p>You need to verify your email '{{user.email}}'.</p>
-          <v-btn @click="sendVerificationEmail" :color="isVerificationEmailSent ? 'success' : 'warning'">Send verification email</v-btn>
+          <v-btn v-if="!isVerificationEmailSent" @click="sendVerificationEmail" :color="isVerificationEmailSent ? 'success' : 'warning'">Send verification email</v-btn>
+          <p v-if="isVerificationEmailSent">Refresh this page after you have verified your email</p>
       </v-form>
       <v-form>
         <v-text-field

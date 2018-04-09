@@ -4,7 +4,8 @@ import 'firebase/auth'
 const state = {
   isAuthenticated: null,
   isLoggedIn: null,
-  user: null
+  user: null,
+  userPromise: null
 }
 
 const getters = {
@@ -16,18 +17,27 @@ const getters = {
   },
   user: state => {
     return state.user
+  },
+  userPromise: state => {
+    return state.userPromise
   }
 }
 
 const actions = {
-  initUsers ({ dispatch }) {
-    return new Promise((resolve, reject) => {
-      firebase.auth().onAuthStateChanged(function (user) {
-        dispatch('updateIsAuthenticated', user).then(() => {
-          resolve()
+  initUsers ({ commit, dispatch, getters }) {
+    if (!getters.userPromise) {
+      commit(
+        'setUserPromise',
+        new Promise((resolve, reject) => {
+          firebase.auth().onAuthStateChanged(function (user) {
+            dispatch('updateIsAuthenticated', user).then(() => {
+              resolve()
+            })
+          })
         })
-      })
-    })
+      )
+    }
+    return getters.userPromise
   },
   signOut (context) {
     firebase.auth().signOut()
@@ -49,29 +59,30 @@ const actions = {
         .auth()
         .createUserWithEmailAndPassword(credentials.email, credentials.password)
         .then(user => {
-          dispatch('setProfile', {
-            uid: user.uid,
-            displayName: credentials.displayName
-          })
-            .then(() => {
-              resolve()
+          dispatch('initUsers').then(() => {
+            dispatch('setProfile', {
+              displayName: credentials.displayName
             })
-            .catch(error => {
-              dispatch('addNotification', {
-                title: 'Error',
-                body: error.message,
-                tag: 'error'
+              .then(() => {
+                resolve()
               })
-            })
+              .catch(error => {
+                dispatch('addNotification', {
+                  title: 'Error',
+                  body: error.message,
+                  tag: 'error'
+                })
+              })
+          })
         })
         .catch(error => {
           reject(error)
         })
     })
   },
-  sendVerificationEmail (context) {
+  sendVerificationEmail ({ getters }) {
     return new Promise((resolve, reject) => {
-      state.user
+      getters.user
         .sendEmailVerification()
         .then(() => {
           resolve()
@@ -101,6 +112,9 @@ const mutations = {
     state.isAuthenticated = false
     state.isLoggedIn = false
     state.user = null
+  },
+  setUserPromise (state, userPromise) {
+    state.userPromise = userPromise
   }
 }
 
