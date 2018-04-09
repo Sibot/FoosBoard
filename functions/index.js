@@ -85,7 +85,7 @@ exports.clearOldEvents = functions.database
   .onCreate((snap, context) => {
     var pastEventKeys = {}
 
-    console.info('Commencing purge of events')
+    console.log('Commencing purge of events')
 
     admin
       .database()
@@ -93,10 +93,16 @@ exports.clearOldEvents = functions.database
       .once('child_added', eventsSnap => {
         var event = eventSnap.val()
         eventTime = event.startedAt + event.appointedTimeFrame * 60 * 1000
-        console.info(new Date(eventTime).toJSON())
+        console.log('This event Expires: ', new Date(eventTime).toJSON())
+        console.log('Time is now: ', new Date().toJSON())
+
         if (new Date().getTime() > eventTime) {
-          console.info(
-            `Event with key '${eventSnap.key}' is old, marked for removal.`
+          console.log(
+            'Event expired ' +
+              new Date(eventTime).toJSON() +
+              ',' +
+              eventKey +
+              ' marked for removal.'
           )
           pastEventKeys[`/events/${eventKey}`] = null
         }
