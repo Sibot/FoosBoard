@@ -1,11 +1,11 @@
 <template>
   <v-card>
     <v-card-title>
-      {{game.playedAt}}
+      {{listItem.playedAt}}
     </v-card-title>
     <v-card-text>
       <v-list two-line>
-        <template v-for="team in sortByScore(game.teams)">
+        <template v-for="team in sortByScore(listItem.teams)">
           <v-list-tile :key="team.id">
             <v-list-tile-content>
               <v-list-tile-title >
@@ -27,7 +27,7 @@
 <script>
 export default {
   name: 'Game',
-  props: ['game'],
+  props: ['listItem'],
   methods: {
     sortByScore: function (teams) {
       return teams.map(t => t).sort(function (current, next) {

@@ -4,20 +4,29 @@
       <players-list></players-list>
     </v-flex>
     <v-flex>
-      <games-list :take=5></games-list>
+      <app-list :list="topTenLatestGames" :take=9>
+        <v-subheader slot="header" class="headline">{{topTenLatestGames.length ? `${topTenLatestGames.length} latest` : 'No'}} games played</v-subheader>
+        <app-game slot="flexItem"></app-game>
+      </app-list>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import Game from '../Shared/Game'
 import PlayersList from './PlayersList'
-import GamesList from './GamesList'
+import AppList from '../Shared/AppList'
 
 export default {
   name: 'Index',
   components: {
+    'app-game': Game,
     'players-list': PlayersList,
-    'games-list': GamesList
+    'app-list': AppList
+  },
+  computed: {
+    ...mapGetters(['topTenLatestGames'])
   }
 }
 </script>
