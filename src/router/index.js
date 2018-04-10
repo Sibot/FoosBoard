@@ -1,13 +1,14 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import store from '../vuex/index'
-import Index from '@/components/Index/Index'
 import About from '@/components/About'
-import Events from '@/components/Events'
+import Events from '@/components/Events/Events'
+import History from '@/components/History'
+import Index from '@/components/Index/Index'
 import NewGame from '@/components/NewGame/NewGame'
+import Profile from '@/components/User/Profile'
 import SignIn from '@/components/User/SignIn'
 import SignUp from '@/components/User/SignUp'
-import Profile from '@/components/User/Profile'
+import store from '../vuex/index'
+import Router from 'vue-router'
+import Vue from 'vue'
 
 Vue.use(Router)
 
@@ -71,6 +72,11 @@ export default new Router({
       path: '/about',
       name: 'About',
       component: About
+    },
+    {
+      path: '/history',
+      name: 'History',
+      component: History
     },
     {
       path: '/game',
