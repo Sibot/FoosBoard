@@ -14,6 +14,8 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const WebappManifest = require('webapp-manifest-plugin')
 const WebappManifestPlugin = WebappManifest.default
 
+var ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
+
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
@@ -78,7 +80,10 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       relatedApplications: [],
       scope: '/'
     }),
-
+    new ServiceWorkerWebpackPlugin({
+      entry: path.join(__dirname, '../src/service-worker.js'),
+      excludes: ['**/.*', '**/*.map', '*.html']
+    }),
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
     }),

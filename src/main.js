@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App'
 import store from './vuex/index'
 import router from './router'
+import '../node_modules/vuetify/src/stylus/app.styl'
+import serviceWorkerContainer from 'serviceworker-webpack-plugin/lib/runtime'
 import {
   Vuetify,
   VApp,
@@ -28,7 +30,6 @@ import {
   VTextField,
   transitions
 } from 'vuetify'
-import '../node_modules/vuetify/src/stylus/app.styl'
 
 Vue.use(Vuetify, {
   components: {
@@ -58,7 +59,7 @@ Vue.use(Vuetify, {
   }
 })
 
-Vue.config.productionTip = false
+// Vue.config.productionTip = false
 
 store.dispatch('initUsers').then(() => {
   store.dispatch('initPlayers').then(() => {
@@ -74,3 +75,6 @@ store.dispatch('initUsers').then(() => {
     })
   })
 })
+if ('serviceWorker' in navigator) {
+  serviceWorkerContainer.register()
+}
