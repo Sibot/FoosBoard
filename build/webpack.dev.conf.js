@@ -10,12 +10,19 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+const WebappManifest = require('webapp-manifest-plugin')
+const WebappManifestPlugin = WebappManifest.default
+
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
-    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
+    rules: utils.styleLoaders({
+      sourceMap: config.dev.cssSourceMap,
+      usePostCSS: true
+    })
   },
   // cheap-module-eval-source-map is faster for development
   devtool: config.dev.devtool,
@@ -25,8 +32,15 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     clientLogLevel: 'warning',
     historyApiFallback: {
       rewrites: [
-        { from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'index.html') },
-      ],
+        {
+          from: /manifest.json/,
+          to: path.posix.join(config.dev.assetsPublicPath, 'manifest.json')
+        },
+        {
+          from: /.*/,
+          to: path.posix.join(config.dev.assetsPublicPath, 'index.html')
+        }
+      ]
     },
     hot: true,
     contentBase: false, // since we use CopyWebpackPlugin.
@@ -41,10 +55,30 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     proxy: config.dev.proxyTable,
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
-      poll: config.dev.poll,
+      poll: config.dev.poll
     }
   },
   plugins: [
+    new FaviconsWebpackPlugin(
+      path.resolve(__dirname, '../src/assets/foos.png')
+    ),
+    new WebappManifestPlugin({
+      name: 'Offerta Enterprise Foosball Scoreboard',
+      shortName: 'FoosBoard',
+      description: 'Offerta Enterprise Foosball Scoreboard',
+      dir: 'auto',
+      lang: 'en-US',
+      display: 'standalone',
+      orientation: 'any',
+      startUrl: '/',
+      backgroundColor: '#8bc343',
+      themeColor: '#8bc343',
+      icons: WebappManifest.FAVICON_PLUGIN,
+      preferRelatedApplications: false,
+      relatedApplications: [],
+      scope: '/'
+    }),
+
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
     }),
@@ -80,14 +114,20 @@ module.exports = new Promise((resolve, reject) => {
       devWebpackConfig.devServer.port = port
 
       // Add FriendlyErrorsPlugin
-      devWebpackConfig.plugins.push(new FriendlyErrorsPlugin({
-        compilationSuccessInfo: {
-          messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`],
-        },
-        onErrors: config.dev.notifyOnErrors
-        ? utils.createNotifierCallback()
-        : undefined
-      }))
+      devWebpackConfig.plugins.push(
+        new FriendlyErrorsPlugin({
+          compilationSuccessInfo: {
+            messages: [
+              `Your application is running here: http://${
+                devWebpackConfig.devServer.host
+              }:${port}`
+            ]
+          },
+          onErrors: config.dev.notifyOnErrors
+            ? utils.createNotifierCallback()
+            : undefined
+        })
+      )
 
       resolve(devWebpackConfig)
     }
