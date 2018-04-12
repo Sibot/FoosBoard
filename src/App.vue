@@ -26,4 +26,7 @@ export default {
 .application {
   font-family: 'Ubuntu Mono', monospace;
 }
+.application.theme--light {
+  background: #8bc343;
+}
 </style>
