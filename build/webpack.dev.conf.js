@@ -10,12 +10,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
-const WebappManifest = require('webapp-manifest-plugin')
-const WebappManifestPlugin = WebappManifest.default
-
-var ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
-
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
@@ -34,10 +28,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     clientLogLevel: 'warning',
     historyApiFallback: {
       rewrites: [
-        {
-          from: /manifest.json/,
-          to: path.posix.join(config.dev.assetsPublicPath, 'manifest.json')
-        },
         {
           from: /.*/,
           to: path.posix.join(config.dev.assetsPublicPath, 'index.html')
@@ -61,29 +51,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     }
   },
   plugins: [
-    new FaviconsWebpackPlugin(
-      path.resolve(__dirname, '../src/assets/foos.png')
-    ),
-    new WebappManifestPlugin({
-      name: 'Offerta Enterprise Foosball Scoreboard',
-      shortName: 'FoosBoard',
-      description: 'Offerta Enterprise Foosball Scoreboard',
-      dir: 'auto',
-      lang: 'en-US',
-      display: 'standalone',
-      orientation: 'any',
-      startUrl: '/',
-      backgroundColor: '#8bc343',
-      themeColor: '#8bc343',
-      icons: WebappManifest.FAVICON_PLUGIN,
-      preferRelatedApplications: false,
-      relatedApplications: [],
-      scope: '/'
-    }),
-    new ServiceWorkerWebpackPlugin({
-      entry: path.join(__dirname, '../src/service-worker.js'),
-      excludes: ['**/.*', '**/*.map', '*.html']
-    }),
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
     }),

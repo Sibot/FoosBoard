@@ -4,6 +4,13 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+const WebappManifest = require('webapp-manifest-plugin')
+const WebappManifestPlugin = WebappManifest.default
+var FAVICON_PLUGIN = WebappManifest.FAVICON_PLUGIN
+
+var ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
+
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -32,6 +39,30 @@ module.exports = {
         ? config.build.assetsPublicPath
         : config.dev.assetsPublicPath
   },
+  plugins: [
+    new FaviconsWebpackPlugin(
+      path.resolve(__dirname, '../src/assets/foos.png')
+    ),
+    new WebappManifestPlugin({
+      name: 'Offerta Enterprise Foosball Scoreboard',
+      shortName: 'FoosBoard',
+      description: 'Offerta Enterprise Foosball Scoreboard',
+      dir: 'auto',
+      lang: 'en-US',
+      display: 'standalone',
+      orientation: 'any',
+      startUrl: '/',
+      backgroundColor: '#8bc343',
+      themeColor: '#8bc343',
+      icons: FAVICON_PLUGIN,
+      preferRelatedApplications: false,
+      relatedApplications: [],
+      scope: '/'
+    }),
+    new ServiceWorkerWebpackPlugin({
+      entry: path.join(__dirname, '../src/service-worker.js')
+    })
+  ],
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
