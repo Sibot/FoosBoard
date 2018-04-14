@@ -80,35 +80,35 @@ exports.calculatePlayerWins = functions.database
     })
   })
 
-exports.clearOldEvents = functions.database
-  .ref('/events')
-  .onCreate((snap, context) => {
-    var pastEventKeys = {}
+// exports.clearOldEvents = functions.database
+//   .ref('/events')
+//   .onCreate((snap, context) => {
+//     var pastEventKeys = {}
 
-    console.log('Commencing purge of events')
+//     console.log('Commencing purge of events')
 
-    admin
-      .database()
-      .ref('events')
-      .once('child_added', eventsSnap => {
-        var event = eventSnap.val()
-        eventTime = event.startedAt + event.appointedTimeFrame * 60 * 1000
-        console.log('This event Expires: ', new Date(eventTime).toJSON())
-        console.log('Time is now: ', new Date().toJSON())
+//     admin
+//       .database()
+//       .ref('events')
+//       .once('child_added', eventsSnap => {
+//         var event = eventSnap.val()
+//         eventTime = event.startedAt + event.appointedTimeFrame * 60 * 1000
+//         console.log('This event Expires: ', new Date(eventTime).toJSON())
+//         console.log('Time is now: ', new Date().toJSON())
 
-        if (new Date().getTime() > eventTime) {
-          console.log(
-            'Event expired ' +
-              new Date(eventTime).toJSON() +
-              ',' +
-              eventKey +
-              ' marked for removal.'
-          )
-          pastEventKeys[`/events/${eventKey}`] = null
-        }
-      })
+//         if (new Date().getTime() > eventTime) {
+//           console.log(
+//             'Event expired ' +
+//               new Date(eventTime).toJSON() +
+//               ',' +
+//               eventKey +
+//               ' marked for removal.'
+//           )
+//           pastEventKeys[`/events/${eventKey}`] = null
+//         }
+//       })
 
-    console.log(`Purging ${pastEventKeys.length} events.`)
+//     console.log(`Purging ${pastEventKeys.length} events.`)
 
-    return admin.database().update(pastEventKeys)
-  })
+//     return admin.database().update(pastEventKeys)
+//   })
