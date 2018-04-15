@@ -1,7 +1,21 @@
 <template>
   <v-container>
     <v-layout row>
-      <v-btn @click="addNewEvent" v-if="isAuthenticated">Add Event</v-btn>
+      <v-card>
+        <v-card-title>
+          <h2 class="headline text-xs-center">
+            Broadcast a new event
+          </h2>
+        </v-card-title>
+        <v-card-text>
+          Feel like its time for a game of Foos?<br />
+          Hit that button and see if anyone else feels the same!
+        </v-card-text>
+        <v-card-actions right>        
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="addNewEvent" v-if="isAuthenticated">Add Event</v-btn>
+        </v-card-actions>
+      </v-card>
       <div v-for="event in ongoingEvents" :key="event.key">
         <event-item :event="event"></event-item>
       </div>
