@@ -3,7 +3,7 @@
     <v-layout column align-center>
         <v-card>
           <v-container>
-            <h2>Profile settings</h2>
+            <h2 class="headline text-xs-center">Profile settings</h2>
             <v-form v-if="!user.emailVerified">
                 <h3>Greetings {{displayName}}!</h3>
                 <p>You need to verify your email '{{user.email}}'.</p>

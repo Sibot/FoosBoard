@@ -2,7 +2,7 @@
   <v-form>
     <v-card v-if="!isAuthenticated">
       <v-card-title>
-        <h2>Sign in!</h2>
+        <h2 class="headline text-xs-center">Sign in!</h2>
       </v-card-title>
       <v-card-text>
           <v-text-field

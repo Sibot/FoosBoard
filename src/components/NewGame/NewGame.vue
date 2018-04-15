@@ -4,7 +4,7 @@
       <v-layout column>
         <v-flex d-flex xs12>
         <v-stepper v-model="step">
-        <h1 class="headline text-xs-center">Register a game</h1>
+        <h2 class="headline text-xs-center">Register a game</h2>
           <v-stepper-header>
             <v-stepper-step step="1" :complete="step > 1">Add Players</v-stepper-step>
             <v-divider></v-divider>

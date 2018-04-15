@@ -2,7 +2,7 @@
   <v-form>
     <v-card>
       <v-card-title>
-        <h2>Sign up!</h2>
+        <h2 class="headline text-xs-center">Sign up!</h2>
       </v-card-title>
       <v-card-text>
           <v-text-field
