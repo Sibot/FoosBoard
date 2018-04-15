@@ -123,7 +123,7 @@ export default {
       fixed: true,
       miniVariant: false,
       right: true,
-      title: 'Official Foosball Score Tracker'
+      title: 'FoosBoard'
     }
   },
   computed: {
