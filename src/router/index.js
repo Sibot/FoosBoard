@@ -6,6 +6,7 @@ import NewGame from '@/components/NewGame/NewGame'
 import Profile from '@/components/User/Profile'
 import SignIn from '@/components/User/SignIn'
 import SignUp from '@/components/User/SignUp'
+import Statistics from '@/components/Statistics'
 import store from '../vuex/index'
 import Router from 'vue-router'
 import Vue from 'vue'
@@ -64,20 +65,36 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
-      name: 'Index',
-      component: Index
-    },
-    {
       path: '/about',
       name: 'About',
       component: About
+    },
+    {
+      path: '/',
+      name: 'Index',
+      component: Index
     },
     {
       path: '/history',
       name: 'History',
       component: History
     },
+    {
+      path: '/statistics',
+      name: 'Statistics',
+      component: Statistics
+    },
+    {
+      path: '/signup',
+      name: 'SignUp',
+      component: SignUp
+    },
+    {
+      path: '/signin',
+      name: 'SignIn',
+      component: SignIn
+    },
+    // Require user state
     {
       path: '/game',
       name: 'NewGame',
@@ -95,16 +112,6 @@ export default new Router({
       name: 'Profile',
       component: Profile,
       beforeEnter: checkLoginState
-    },
-    {
-      path: '/signup',
-      name: 'SignUp',
-      component: SignUp
-    },
-    {
-      path: '/signin',
-      name: 'SignIn',
-      component: SignIn
     }
   ]
 })
