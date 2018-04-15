@@ -98,7 +98,7 @@
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       </v-badge>
       <v-toolbar-side-icon v-else @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <a to="/"><v-toolbar-title v-text="title"></v-toolbar-title></a>
+      <v-toolbar-title v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items v-show="isAuthenticated">
         <v-btn flat to="/game">Register game</v-btn>
