@@ -5,12 +5,8 @@ const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
-const WebappManifest = require('webapp-manifest-plugin')
-const WebappManifestPlugin = WebappManifest.default
-var FAVICON_PLUGIN = WebappManifest.FAVICON_PLUGIN
-
-var ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
-
+const { InjectManifest } = require('workbox-webpack-plugin')
+const WebpackPwaManifest = require('webpack-pwa-manifest')
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -39,11 +35,17 @@ module.exports = {
         ? config.build.assetsPublicPath
         : config.dev.assetsPublicPath
   },
+  optimization: {
+    splitChunks: {
+      name: 'vendor',
+      chunks: 'all'
+    }
+  },
   plugins: [
-    new FaviconsWebpackPlugin(
-      path.resolve(__dirname, '../src/assets/foos.png')
-    ),
-    new WebappManifestPlugin({
+    // new FaviconsWebpackPlugin(
+    //   path.resolve(__dirname, '../src/assets/foos.png')
+    // ),
+    new WebpackPwaManifest({
       name: 'Offerta Enterprise Foosball Scoreboard',
       shortName: 'FoosBoard',
       description: 'Offerta Enterprise Foosball Scoreboard',
@@ -54,13 +56,18 @@ module.exports = {
       startUrl: '/',
       backgroundColor: '#8bc343',
       themeColor: '#8bc343',
-      icons: FAVICON_PLUGIN,
+      icons: [
+        {
+          src: path.resolve('src/assets/foos.png'),
+          sizes: [96, 128, 192, 256, 384, 512, 1024]
+        }
+      ],
       preferRelatedApplications: false,
       relatedApplications: [],
       scope: '/'
     }),
-    new ServiceWorkerWebpackPlugin({
-      entry: path.join(__dirname, '../src/service-worker.js')
+    new InjectManifest({
+      swSrc: './src/service-worker.js'
     })
   ],
   resolve: {

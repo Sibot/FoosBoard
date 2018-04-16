@@ -3,7 +3,6 @@ import App from './App'
 import store from './vuex/index'
 import router from './router'
 import '../node_modules/vuetify/src/stylus/app.styl'
-import runtime from 'serviceworker-webpack-plugin/lib/runtime'
 import {
   Vuetify,
   VApp,
@@ -76,5 +75,5 @@ store.dispatch('initUsers').then(() => {
   })
 })
 if ('serviceWorker' in navigator) {
-  runtime.register({ scope: '.' })
+  navigator.serviceWorker.register('service-worker.js', { scope: '.' })
 }
