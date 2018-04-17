@@ -6,7 +6,11 @@ self.addEventListener('install', function (e) {
     caches.open(cacheName).then(function (cache) {
       console.log('[ServiceWorker] Caching app shell')
 
-      return cache.addAll(__precacheManifest)
+      return cache.addAll(
+        __precacheManifest.map(v => {
+          return v.url
+        })
+      )
     })
   )
 })
